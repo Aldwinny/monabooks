@@ -1,0 +1,160 @@
+/*---------- FEATURED ITEMS ----------*/
+
+
+/* general */
+
+#featured-items {
+    position: relative;
+    top: 0;
+}
+
+.item-featured {
+    height: 100%;
+    margin: auto 0;
+    color: #fff;
+}
+.item-featured img {
+    display: block;
+}
+.item-featured h1 {
+    margin: 3vh 0;
+    color: #fff !important;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+.item-featured p {
+    font-weight: 300;
+}
+
+.slide-bg {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+}
+
+.carousel-indicators button {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 100%;
+}
+
+.shop-now {
+    color: rgb(var(--white));
+    font-weight: 500;
+    text-transform: uppercase;
+    border: 2px solid rgb(var(--white));
+    border-radius: var(--default-border-radius);
+}
+.shop-now:hover {
+    color: white;
+    background: rgb(var(--white), .2) !important;
+}
+
+.with-shadow {
+    -webkit-filter: drop-shadow(0 5px 3px #000000a4);
+    filter: drop-shadow(0 5px 3px #000000a4); 
+}
+
+
+/* flex direction: column */
+
+.item-featured-x {
+    padding: 0 20%;
+}
+.item-featured-x img {
+    width: 35vw;
+    margin: 0 auto;
+}
+.item-featured-x img:hover {
+    transform: translate(0, -10px);
+}
+.item-featured-x h1,
+.item-featured-x p {
+    text-align: center;
+}
+
+
+/* flex direction: row */
+
+.item-featured-y .tall-img {
+    height: 58vh;
+}
+.item-featured-y .long-img {
+    width: 30vw;
+}
+.item-featured-y img:hover {
+    transform: translate(10px, 10px);
+}
+
+.item-featured-y-desc {
+    margin-right: 7vw;
+}
+
+
+
+/*---------- BESTSELLERS ----------*/
+
+
+.bestsellers {
+    overflow: auto;
+}
+
+.bestsellers h1 {
+    margin: 0 auto 8vh;
+}
+
+
+/* product */
+
+.product {
+    position: relative;
+    width: 18vw;
+    margin: 1.2em;
+    padding: 0.8em;
+    border-radius: var(--default-border-radius);
+}
+.product:hover {
+    box-shadow: 0 0 15px var(--shadow-color);
+}
+
+.product img {
+    display: block;
+}
+
+.card-title {
+    margin-top: 10px;
+}
+
+.product p {
+    margin: 0;
+}
+
+.product-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(var(--accent), .5);
+    border-radius: var(--default-border-radius);
+}
+.product-overlay .btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgb(var(--accent));
+    padding: 0.9rem;
+    border-radius: 100%;
+}
+.product-overlay .btn ion-icon {
+    display: block;
+    color: #fff;
+    font-size: 1.2rem;
+    --ionicon-stroke-width: 60px;
+}
+.product:hover .product-overlay {
+    display: block;
+}

@@ -1,0 +1,21 @@
+.img-wrapper {
+    width: fit-content;
+    margin: 0 auto 5vh;
+}
+
+img {
+    width: 14vw;
+}
+
+
+/* remove arrows in number input */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}

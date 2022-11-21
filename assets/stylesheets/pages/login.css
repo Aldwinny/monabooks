@@ -1,0 +1,77 @@
+.section {
+    margin-bottom: 20vh !important;
+}
+
+.form {
+    text-align: center;
+}
+
+.form a {
+    color: rgb(var(--accent), .8);
+    text-decoration: none;
+    border-bottom: 1px solid rgb(var(--accent), .8);
+}
+.form a:hover {
+    color: rgb(var(--accent));
+    border-bottom: 1px solid rgb(var(--accent));
+}
+
+.form h1 {
+    margin-bottom: 7vh;
+}
+
+.custom-form {
+    margin: 4vh 20%;
+}
+
+.form-control {
+    background: transparent;
+    font-size: 0.9rem;
+    font-weight: 300;
+    border: 0;
+    border-bottom: 1px solid var(--default-text-color);
+    border-radius: 0;
+}
+.form-control:focus {
+    background: rgb(var(--white), .6);
+    border-color: rgb(var(--accent));
+}
+
+.form-group {
+    text-align: left;
+}
+.form-group:not(:last-of-type) {
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}
+
+input:not(:placeholder-shown) {
+    border-color: rgb(var(--accent));
+}
+
+.form-control,
+.form-control:focus,
+.form a,
+.form a:hover {
+    transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -o-transition: all 0.4s;
+}
+
+
+/* remove arrows in number input */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}

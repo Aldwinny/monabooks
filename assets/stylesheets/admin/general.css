@@ -1,0 +1,205 @@
+/*---------- GENERAL ----------*/
+
+
+.container-fluid {
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 4%
+}
+
+
+
+/*---------- FORM ----------*/
+
+
+form {
+    margin: 0 15%;
+}
+
+.col-form-label,
+.form-label {
+    font-weight: 400;
+}
+
+.form-group {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.input-group:not(:last-of-type) {
+    margin-bottom: 1rem;
+}
+
+/* input fields */
+
+[input-field] {
+    background-color: rgb(var(--white), .7);
+    border-color: rgb(var(--accent), .3);
+    border-radius: calc(var(--default-border-radius)/2);
+}
+[input-field]:hover {
+    background-color: rgb(var(--white), .8);
+    border-color: rgb(var(--accent), .5);
+}
+[input-field]:focus {
+    background-color: rgb(var(--white));
+    border-color: rgb(var(--accent));
+}
+
+/* read only */
+
+[input-field]:read-only {
+    background-color: rgb(var(--white));
+}
+
+
+
+/*---------- BUTTONS ----------*/
+
+.submit-btn,
+.inline-button {
+    padding: 0.5rem 1.2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.submit-btn, .submit-btn:hover,
+.inline-button, .inline-button:hover {
+    color: rgb(var(--white));
+}
+
+/* submit button */
+
+.submit-btn {
+    background: rgb(var(--accent));
+    border-radius: calc(var(--default-border-radius)/2);
+}
+.submit-btn:hover {
+    background: rgb(var(--accent), .9);
+}
+
+/* inline button */
+
+.inline-button {
+    background: rgb(var(--accent), .5);
+    border-radius: 0 calc(var(--default-border-radius)/2) calc(var(--default-border-radius)/2) 0;
+}
+.inline-button:hover {
+    background: rgb(var(--accent), .7);
+}
+.inline-button:active {
+    background: rgb(var(--accent));
+}
+
+/* button group */
+
+.button-group {
+    text-align: right;
+}
+
+.danger {
+    background: rgb(var(--red)) !important;
+    border-color: rgb(var(--red));
+}
+.danger:hover {
+    background: rgb(var(--red), .8) !important;
+    border-color: rgb(var(--red), .8) !important;
+}
+
+
+/*---------- TABS ----------*/
+
+.nav-tabs {
+    margin-top: 7vh;
+    border-color: rgb(var(--accent), .5);
+}
+
+.nav-tabs > .nav-item > .nav-link {
+    margin-right: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px
+}
+.nav-tabs > .nav-item > .nav-link:hover {
+    background: rgb(var(--white), .5);
+    color: var(--default-text-color);
+    border-top-color: rgb(var(--accent), .2);
+    border-right-color: rgb(var(--accent), .2);
+    border-left-color: rgb(var(--accent), .2);
+}
+.nav-tabs > .nav-item > .active {
+    color: var(--default-text-color);
+}
+.nav-tabs > .nav-item > .active:hover {
+    background: rgb(var(--white));
+}
+
+.nav-tabs > .nav-item,
+.nav-tabs > .nav-item > .active,
+.nav-tabs > .nav-item > .active:hover,
+.nav-tabs > .nav-item > .active:focus,
+.tab-content {
+    border-top-color: rgb(var(--accent), .5);
+    border-right-color: rgb(var(--accent), .5);
+    border-left-color: rgb(var(--accent), .5);
+}
+
+
+
+/*---------- TABLE ----------*/
+
+.table {
+    background: rgb(var(--white));
+}
+
+th {
+    font-weight: 500;
+    border-color: rgb(var(--accent)) !important;
+}
+
+
+
+/*---------- BACK LINK ----------*/
+
+
+.go-back {
+    padding: 8px 10px 8px 5px;
+    background: rgb(var(--default-background));
+    width: fit-content;
+    font-weight: 300;
+    border: 0;
+    border-radius: 0;
+}
+
+.go-back ion-icon {
+    margin-right: 5px;
+    color: rgb(var(--accent));
+    font-size: 1rem;
+}
+
+.go-back span {
+    color: rgb(var(--accent));
+    border-bottom: 1px solid rgb(var(--accent));
+}
+
+.go-back:hover ion-icon,
+.go-back:hover span {
+    color: rgb(var(--accent), .8);
+    border-color: rgb(var(--accent), .8);
+}
+
+
+
+/*---------- EXTRA ----------*/
+
+
+/* remove box shadow */
+
+.form-select {
+    box-shadow: none !important;
+}
+
+.left-text {
+    text-align: left;
+}

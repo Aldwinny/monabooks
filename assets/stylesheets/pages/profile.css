@@ -1,0 +1,80 @@
+.img-wrapper {
+    width: 18%;
+}
+.profile-pic {
+    border: 3px solid rgb(var(--white));
+    border-radius: var(--default-border-radius);
+}
+
+
+
+.info {
+    padding-left: 4rem;
+    width: 76%;
+}
+.info > * {
+    margin: 1rem 0;
+}
+
+
+h1 {
+    margin-top: 0 !important;
+}
+
+
+.balance {
+    color: rgb(var(--accent));
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.bal {
+    margin-left: 0.5rem;
+    padding: 0.3rem 0.7rem;
+    background: rgb(var(--accent));
+    color: rgb(var(--white));
+    border-radius: calc(var(--default-border-radius) / 2);
+}
+
+
+.info-content {
+    margin: 0.8rem 0;
+}
+.title {
+    font-weight: 500;
+}
+.value {
+    margin-top: 0.3rem;
+    padding: 0.3rem 0.7rem;
+    width: fit-content;
+    background: rgb(var(--white));
+    border-radius: calc(var(--default-border-radius) / 2);
+}
+
+
+
+.edit {
+    width: 6%;
+}
+.edit-button {
+    float: right;
+    margin-right: 1rem;
+    padding: 0.5rem;
+    background: rgb(var(--accent));
+    font-size: 1.3rem;
+    border-radius: 50%;
+}
+.edit-button ion-icon {
+    color: rgb(var(--white));
+}
+
+
+#add-toggle {
+    margin-left: 0.5rem;
+    padding: 0.3rem;
+    background: rgb(var(--accent));
+    border-radius: calc(var(--default-border-radius) / 2);
+}
+#add-toggle ion-icon {
+    font-size: 1.3rem;
+    color: rgb(var(--white));
+}

@@ -1,0 +1,30 @@
+.feedback-list {
+    margin-top: 7vh;
+}
+
+tr > .id {
+    width: 5%;
+}
+
+tr > .name {
+    width: 15%;
+}
+
+tr > .email {
+    width: 25%;
+}
+
+tr > .contact {
+    width: 10%;
+}
+
+tr > .msg {
+    width: 40%;
+}
+tr > .msg:not(th) {
+    text-align: left;
+}
+
+tr > .controls {
+    width: 5%;
+}

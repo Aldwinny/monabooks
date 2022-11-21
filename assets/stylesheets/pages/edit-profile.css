@@ -1,0 +1,69 @@
+.form {
+    text-align: center;
+}
+.form h1 {
+    margin-bottom: 7vh;
+}
+
+
+
+.custom-form {
+    margin: 4vh 20%;
+}
+
+.form-control {
+    background: rgb(var(--white), .6);
+    font-size: 0.9rem;
+    font-weight: 300;
+    border: 1px solid rgb(var(--accent), .5);
+    border-radius: calc(var(--default-border-radius) / 2);
+}
+.form-control:hover {
+    background: rgb(var(--white), .8);
+    border-color: rgb(var(--accent), .7);
+}
+.form-control:focus,
+.form-control:focus:hover {
+    background: rgb(var(--white));
+    border-color: rgb(var(--accent));
+}
+
+.form-group {
+    text-align: left;
+}
+.form-group:not(:last-of-type) {
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}
+
+
+.button-group {
+    text-align: right
+}
+
+.danger {
+    background: rgb(var(--red)) !important;
+    border-color: rgb(var(--red));
+}
+.danger:hover {
+    background: rgb(var(--red), .8) !important;
+    border-color: rgb(var(--red), .8) !important;
+}
+
+.submit-btn {
+    padding: 0.5rem 1.2rem;
+    background: rgb(var(--accent));
+    font-weight: 500;
+    text-transform: uppercase;
+    border-radius: calc(var(--default-border-radius)/2);
+}
+.submit-btn:hover {
+    background: rgb(var(--accent), .9);
+}
+.submit-btn, .submit-btn:hover {
+    color: rgb(var(--white));
+}

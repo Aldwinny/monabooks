@@ -1,0 +1,152 @@
+/*---------- TOP LINKS ----------*/
+
+
+/* link */
+
+.links {
+    margin-top: 6rem;
+    margin-bottom: 4rem;
+}
+
+.links > a {
+    font-weight: 500;
+    color: var(--default-text-color);
+    text-transform: capitalize;
+    text-decoration: none;
+}
+.links > a:hover {
+    color: rgb(var(--accent));
+}
+
+
+/* chevron */
+
+.links > ion-icon {
+    margin: 0 1rem;
+}
+
+
+
+/*---------- GENERAL ----------*/
+
+
+.section {
+    width: 80vw;
+    margin: auto;
+    margin-bottom: 13vh !important;
+}
+
+
+
+/*---------- PRODUCT INFO ----------*/
+
+
+/* general */
+
+.content {
+    margin-top: 3rem;
+}
+
+
+/* image */
+
+.img-wrapper {
+    width: 45%;
+    margin-right: 3rem;
+}
+.product-img {
+    width: 100%;
+    border-radius: var(--default-border-radius);
+}
+.product-img:hover {
+    box-shadow: 0 0 20px rgb(var(--accent), .5);
+}
+
+
+/* product info */
+
+.info {
+    width: 55%;
+}
+
+
+/* name */
+
+.name {
+    margin-bottom: 2rem;
+}
+
+
+/* price */
+
+.price {
+    margin-bottom: 1.3rem;
+    padding: 0.3rem 0.6rem;
+    background: rgb(var(--accent));
+    width: fit-content;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: rgb(var(--white));
+    border-radius: calc(var(--default-border-radius) / 2);
+    cursor: default;
+}
+.price:hover {
+    box-shadow: 0 0 var(--small-shadow-blur) rgb(var(--accent), .5);
+}
+
+
+/* description */
+
+.desc {
+    margin-bottom: 2rem;
+    line-height: 2rem;
+}
+
+
+/* quantity */
+
+.quantity {
+    margin-bottom: 1.5rem;
+}
+
+.quantity > p {
+    margin: 0 0.5rem 0 0;
+    font-weight: 500;
+}
+
+.form-control {
+    background: rgb(var(--white)) !important;
+    text-align: center;
+    border-color: var(--default-border-color);
+    border-radius: calc(var(--default-border-radius) / 2) !important;
+}
+
+.add-to-cart {
+    padding: 0.5rem 1rem;
+    background: rgb(var(--accent));
+    color: rgb(var(--white));
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    border-radius: calc(var(--default-border-radius) / 2);
+}
+.add-to-cart:hover {
+    color: rgb(var(--white));
+    background: rgb(var(--accent), .8);
+}
+
+input[type="number"] {
+    width: 5rem;
+    text-align: center;
+}
+input[type="number"]:hover {
+    border-color: rgb(var(--accent), .5);
+}
+input[type="number"]:focus,
+input[type="number"]:focus:hover {
+    border-color: rgb(var(--accent));
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+   opacity: 1;
+}

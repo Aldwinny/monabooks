@@ -1,0 +1,74 @@
+/*---------- GENERAL ----------*/
+
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+/*---------- HEADINGS ----------*/
+
+
+h1 {
+    margin: 0 0 0.5rem;
+    font-size: 3.2rem;
+}
+
+h2 {
+    font-size: 1.7rem;
+    font-weight: 300;
+}
+
+.heading {
+    margin: 0 0 3rem;
+    text-align: center;
+}
+
+
+
+/*---------- LINKS ----------*/
+
+
+.box-link {
+    padding: 4rem 3rem;
+    background: rgb(var(--white));
+    color: rgb(var(--default-text-color));
+    font-size: 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    border-radius: var(--default-border-radius);
+}
+.box-link:hover {
+    background: rgb(var(--accent), .2);
+    color: rgb(var(--default-text-color));
+    box-shadow: 0 0 var(--small-shadow-blur) var(--shadow-color);
+}
+.box-link:not(:last-child) {
+    margin-right: 3rem;
+}
+
+
+
+/*---------- BACK BUTTON ----------*/
+
+
+.go-back {
+    padding: 8px 10px 8px 5px;
+    background: rgb(var(--default-background));
+    border: 0;
+    border-radius: 0;
+}
+
+.go-back ion-icon {
+    margin-right: 5px;
+    color: rgb(var(--accent));
+    font-size: 1rem;
+}
+
+.go-back img {
+    height: 1rem;
+}

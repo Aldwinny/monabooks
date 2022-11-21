@@ -1,0 +1,35 @@
+tr > .id {
+    width: 5%;
+}
+
+tr > .display-image {
+    width: 14%;
+}
+tr > .display-image img {
+    display: block;
+    width: 14vw;
+}
+
+tr > .brand {
+    width: 12%;
+}
+
+tr > .name {
+    width: 16%;
+}
+
+tr > .desc {
+    width: 30%;
+}
+
+tr > .price {
+    width: 10%;
+}
+
+tr > .controls {
+    width: 13%;
+}
+
+td > .btn-group > *:not(:last-child) {
+    margin-bottom: 0.5rem;
+}
