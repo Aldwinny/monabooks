@@ -77,7 +77,7 @@ if($type == "fiction") {
             </div>
         </div>
     </div>
-
+    
     <?php
 
         // footer

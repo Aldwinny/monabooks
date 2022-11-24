@@ -6,25 +6,37 @@ include "assets/scripts/php/connection.php";
 $type = $_GET["type"];
 $id = $_GET["id"];
 
-if($type == "keychain_buddies") {
-    $dbtable = "keychain_buddies";
-    $ptype = "Keychain Buddies";
+if($type == "fiction") {
+    $dbtable = "fiction";
+    $ptype = "Fiction";
 } 
-else if($type == "agent_clothes") {
-    $dbtable = "agent_clothes";
-    $ptype = "Kitchen Appliance";
+else if($type == "non_fiction") {
+    $dbtable = "non_fiction";
+    $ptype = "Fiction";
 } 
-else if($type == "printed_maps") {
-    $dbtable = "printed_maps";
-    $ptype = "Washing Machine";
+else if($type == "drama") {
+    $dbtable = "drama";
+    $ptype = "Drama";
 } 
-else if($type == "gun_skins") {
-    $dbtable = "gun_skins";
-    $ptype = "Air Conditioner";
+else if($type == "poetry") {
+    $dbtable = "poetry";
+    $ptype = "Poetry";
 } 
-else if($type == "riot_merch") {
-    $dbtable = "riot_merch";
-    $ptype = "Small Appliance";
+else if($type == "folktale") {
+    $dbtable = "folktale";
+    $ptype = "Folktale";
+}
+else if($type == "historical") {
+    $dbtable = "historical";
+    $ptype = "Historical ";
+} 
+else if($type == "educational") {
+    $dbtable = "educational";
+    $ptype = "Educational";
+} 
+else if($type == "children_books") {
+    $dbtable = "children_books";
+    $ptype = "Children Books";
 }
 
 
@@ -78,11 +90,14 @@ while($row = mysqli_fetch_array($res))
                     <label for="type" class="col-form-label col-2 left-text">Product Type</label>
                     <div class="col">
                         <select name="type" class="form-select" required input-field>
-                            <option value="keychain_buddies">Keychain Buddies</option>
-                            <option value="gun_skins">Air Conditioner</option>
-                            <option value="printed_maps">Washing Machine</option>
-                            <option value="agent_clothes">Kitchen Appliance</option>
-                            <option value="riot_merch">Small Appliance</option>
+                            <option value="fiction">Fiction</option>
+                            <option value="non_fiction">Air Conditioner</option>
+                            <option value="drama">Drama</option>
+                            <option value="poetry">Poetry</option>
+                            <option value="folktale">Folktale</option>
+                            <option value="historical">Historical</option>
+                            <option value="educational">Educational</option>
+                            <option value="children_books">Children Books</option>
                         </select>
                     </div>
                 </div>
@@ -131,9 +146,9 @@ while($row = mysqli_fetch_array($res))
         if(isset($_POST["change"])){
             if($type != $_POST["type"]){
                 $type = $_POST["type"];
-                if($type == "keychain_buddies") {
+                if($type == "fiction") {
                     $oldTbl= $dbtable;
-                    $dbtable2 = "keychain_buddies";
+                    $dbtable2 = "fiction";
                 } 
                 elseif($type == "gun_skins") {
                     $oldTbl= $dbtable;
@@ -143,9 +158,9 @@ while($row = mysqli_fetch_array($res))
                     $oldTbl= $dbtable;
                     $dbtable2 = "printed_maps";
                 }  
-                elseif($type == "agent_clothes") {
+                elseif($type == "non_fiction") {
                     $oldTbl= $dbtable;
-                    $dbtable2 = "agent_clothes";
+                    $dbtable2 = "non_fiction";
                 }  
                 elseif($type == "riot_merch") {
                     $oldTbl= $dbtable;

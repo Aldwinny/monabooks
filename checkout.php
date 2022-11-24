@@ -24,11 +24,11 @@ if(isset($_POST['checkout'])){
             
         }
         else{
-            echo "<script type='text/javascript'>alert('You have insufficient balance!'); window.location.href = 'http://locknload.rf.gd/cart.php'</script>";
+            echo "<script type='text/javascript'>alert('You have insufficient balance!'); window.location.href = 'http://monabooks.rf.gd/cart.php'</script>";
         }
     }
     else{
-        echo "<script type='text/javascript'>alert('You have to login first!'); window.location.href = 'http://locknload.rf.gd/login.php'</script>";
+        echo "<script type='text/javascript'>alert('You have to login first!'); window.location.href = 'http://monabooks.rf.gd/login.php'</script>";
     }
 
 }

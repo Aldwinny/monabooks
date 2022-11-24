@@ -16,10 +16,10 @@ if(isset($_POST['email'])){
         session_start();
 		$_SESSION['email'] = $email;
         if($email==$adminEmail){
-            header("Location: http://locknload.rf.gd//admin-main.php");
+            header("Location: http://monabooks.rf.gd//admin-main.php");
         }
         else{
-            header("Location: http://locknload.rf.gd//index.php");
+            header("Location: http://monabooks.rf.gd//index.php");
         }
         
         exit();

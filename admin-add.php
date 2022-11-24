@@ -44,6 +44,12 @@ include "assets/scripts/php/connection.php";
                     </div>
                 </div>
                 <div class="input-group">
+                    <label for="brand" class="col-form-label col-2 left-text">Brand</label>
+                    <div class="col">
+                        <input type="text" name="brand" class="form-control" required input-field limited-special>
+                    </div>
+                </div>
+                <div class="input-group">
                     <label for="name" class="col-form-label col-2 left-text">Product Name</label>
                     <div class="col">
                         <input type="text" name="name" class="form-control" required input-field limited-special>
@@ -83,6 +89,7 @@ include "assets/scripts/php/connection.php";
 
             $type = $_POST["type"];
             $name = $_POST["name"];
+            $brand = $_POST["brand"];
             $desc = $_POST["desc"];
             $price = $_POST["price"];
 
@@ -117,7 +124,7 @@ include "assets/scripts/php/connection.php";
             $img_dbname = "assets/media/images/products/$dbtable/".$time.$file_name;
             move_uploaded_file($_FILES["image"]["tmp_name"], $target_path);
 
-            mysqli_query($connection, "INSERT INTO $dbtable values(NULL, '$name', '$desc', '$img_dbname', '$price')");
+            mysqli_query($connection, "INSERT INTO $dbtable values(NULL, '$brand', '$name', '$desc', '$img_dbname', '$price')");
 
             ?>
             <script>
@@ -131,3 +138,4 @@ include "assets/scripts/php/connection.php";
     <script src="assets/scripts/js/form-validation.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
+

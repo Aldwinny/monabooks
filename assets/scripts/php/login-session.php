@@ -7,14 +7,14 @@ if (isset($_POST['login-submit'])) {
 	$pass = $POST['pass'];
 
 	if(empty($email)||empty($pass)){
-		header("Location: http://locknload.rf.gd/login.php");
+		header("Location: http://monabooks.rf.gd/login.php");
 		exit();
 	}
 	else{
 		$sql = "select * from user_table where email =? or email = ?;";
 		$stmt = mysqli_stmt_init($connection);
 		if(!mysqli_stmt_prepare($stmt)){
-			header("Location: http://locknload.rf.gd/login.php");
+			header("Location: http://monabooks.rf.gd/login.php");
 			exit();
 		}
 		else{
@@ -24,7 +24,7 @@ if (isset($_POST['login-submit'])) {
 			if($row = mysqli_fetch_assoc($result)){
 				$passCheck = passwordVerify($pass, $row['pass']);
 				if($passCheck==false){
-					header("Location: http://locknload.rf.gd/login.php");
+					header("Location: http://monabooks.rf.gd/login.php");
 					exit();
 				}
 				else if ($passCheck==true) {
@@ -34,13 +34,13 @@ if (isset($_POST['login-submit'])) {
 
 				}
 				else{
-					header("Location: http://locknload.rf.gd/admin-main.php");
+					header("Location: http://monabooks.rf.gd/admin-main.php");
 					exit();
 				}
 			}
 			else{
 				echo "no such user";
-				header("Location: http://locknload.rf.gd/login.php");
+				header("Location: http://monabooks.rf.gd/login.php");
 				exit();
 			}
 		}
