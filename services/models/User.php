@@ -95,7 +95,7 @@ class User
         $this->lastname = htmlspecialchars(strip_tags($this->lastname));
         $this->email = filter_var($this->email, FILTER_SANITIZE_EMAIL);
         $this->phone = filter_var($this->phone, FILTER_SANITIZE_NUMBER_INT);
-        $this->address = htmlspecialchars(strip_tags($this->lastname));
+        $this->address = htmlspecialchars(strip_tags($this->address));
         $this->credit_limit = intval(filter_var($this->credit_limit, FILTER_SANITIZE_NUMBER_INT));
         $this->balance = floatval(filter_var($this->balance, FILTER_SANITIZE_NUMBER_FLOAT));
 
@@ -126,16 +126,16 @@ class User
     // UNUSED AND UNTESTED
     public function update()
     {
-        $query = 'UPDATE ' . $this->table . 'SET 
+        $query = 'UPDATE ' . $this->table . ' SET 
         firstname = :firstname,
         lastname = :lastname,
         email = :email,
         phone = :phone,
         address = :address,
         balance = :balance,
-        img_link = :img_link
-        credit_limit = :credit_limit
-        access_level = :access_level WHERE id = :id';
+        img_link = :img_link,
+        credit_limit = :credit_limit,
+        access_level = :access_level WHERE user_id = :id';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -145,7 +145,7 @@ class User
         $this->lastname = htmlspecialchars(strip_tags($this->lastname));
         $this->email = filter_var($this->email, FILTER_SANITIZE_EMAIL);
         $this->phone = filter_var($this->phone, FILTER_SANITIZE_NUMBER_INT);
-        $this->address = htmlspecialchars(strip_tags($this->lastname));
+        $this->address = htmlspecialchars(strip_tags($this->address));
         $this->credit_limit = intval(filter_var($this->credit_limit, FILTER_SANITIZE_NUMBER_INT));
         $this->img_link = htmlspecialchars(strip_tags($this->img_link));
         $this->balance = floatval(filter_var($this->balance, FILTER_SANITIZE_NUMBER_FLOAT));

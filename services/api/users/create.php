@@ -16,8 +16,18 @@ $db = $database->connect();
 // Instantiate user object
 $user = new User($db);
 
+// Create JSON Result variable
+$json_result = array();
+
 // Get raw posted data
 $data = json_decode(file_get_contents("php://input"));
+
+if (!isset($data->firstname, $data->lastname, $data->email, $data->phone, $data->phone, $data->address, $data->password)) {
+    $json_result["status"] = 400;
+    $json_result["message"] = "Incomplete credentials.";
+    echo json_encode($json_result);
+    die();
+}
 
 $user->firstname = $data->firstname;
 $user->lastname = $data->lastname;
@@ -30,7 +40,12 @@ $user->password = $data->password;
 
 // Create user
 if ($user->create()) {
-    echo json_encode(array("message" => "User Created", "token" => Token::getToken($user->id, $user->firstname, $user->lastname, $user->access_level)));
+    $json_result["status"] = 201;
+    $json_result["message"] = "User created successfully.";
+    $json_result["token"] = Token::getToken($user->id, $user->firstname, $user->lastname, $user->access_level);
+    echo json_encode($json_result);
 } else {
-    echo json_encode(array("message" => "User not created"));
+    $json_result["status"] = 500;
+    $json_result["message"] = "User not created. An error may have been the cause.";
+    echo json_encode($json_result);
 }
