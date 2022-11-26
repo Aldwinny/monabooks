@@ -7,6 +7,7 @@ header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,
 
 include_once '../../config/Database.php';
 include_once '../../models/User.php';
+include_once '../../utils/token.php';
 
 // Instantiate DB & Connect
 $database = new Database();
@@ -29,7 +30,7 @@ $user->password = $data->password;
 
 // Create user
 if ($user->create()) {
-    echo json_encode(array("message" => "User Created"));
+    echo json_encode(array("message" => "User Created", "token" => Token::getToken($user->id, $user->firstname, $user->lastname, $user->access_level)));
 } else {
     echo json_encode(array("message" => "User not created"));
 }

@@ -98,6 +98,9 @@ class User
         $this->credit_limit = filter_var($this->credit_limit, FILTER_SANITIZE_NUMBER_INT);
         $this->balance = filter_var($this->balance, FILTER_SANITIZE_NUMBER_FLOAT);
 
+        // Hash + Salt password
+        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+
         // Bind data
         $stmt->bindParam(':firstname', $this->firstname);
         $stmt->bindParam(':lastname', $this->lastname);
@@ -109,6 +112,7 @@ class User
         $stmt->bindParam(':password', $this->password);
 
         if ($stmt->execute()) {
+            $this->setProperties();
             return true;
         }
 
@@ -116,5 +120,27 @@ class User
         printf("Error: %s.\n", $stmt->error);
 
         return false;
+    }
+
+    private function setProperties()
+    {
+        $query = 'SELECT * FROM ' . $this->table . ' WHERE email= :email';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Bind data
+        $stmt->bindParam(':email', $this->email);
+
+        // Execute Query
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Set properties
+        $this->id = $row['user_id'];
+        $this->img_link = $row['img_link'];
+        $this->created = $row['created'];
+        $this->access_level = $row['access_level'];
     }
 }

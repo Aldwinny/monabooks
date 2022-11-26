@@ -1,8 +1,12 @@
 <?php
+// GET: params: all or id=[number]
+// receive: JSON
 
 // Headers
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
+header('Access-Control-Allow-Methods: GET,POST');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 include_once '../../config/Database.php';
 include_once '../../models/User.php';
@@ -14,11 +18,44 @@ $db = $database->connect();
 // Instantiate user object
 $user = new User($db);
 
+// Create JSON Result variable
+$json_result = array();
+
+// Get all headers
+$headers = apache_request_headers();
+
+if (!isset($headers['Authorization'])) {
+    $json_result["code"] = 401;
+    $json_result["message"] = "Login Required.";
+    echo $json_result;
+    die();
+}
+
+// Get token payload from token
+$token = $headers['Authorization'];
+$payload = json_decode(Token::getPayload($token), true);
+
+// Separate information from payload
+$id = $payload["id"];
+$access = $payload["access_level"];
+
+// Check token validity
+if (!Token::verifyToken($token)) {
+    $json_result["code"] = 400;
+    $json_result["message"] = "Bad Token, Please login again.";
+    echo $json_result;
+    die();
+}
+
 // Check if single read or read all
 if (isset($_GET['all'])) {
-    /**
-     * WHEN USING ALL, THERE MUST BE AN IDENTIFIER THAT CERTIFIES USER AS EMPLOYEE/ADMIN
-     */
+    // Check if user has authorization
+    if ($access > 1) {
+        $json_result["code"] = 401;
+        $json_result["message"] = "Unauthorized.";
+        echo $json_result;
+        die();
+    }
 
     // Users query
     $result = $user->read();
@@ -29,8 +66,7 @@ if (isset($_GET['all'])) {
     // Check if any users
     if ($num > 0) {
         // Post Array
-        $users_arr = array();
-        $users_arr['data'] = array();
+        $json_result['data'] = array();
 
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
@@ -48,36 +84,41 @@ if (isset($_GET['all'])) {
             );
 
             // Push to "data"
-            array_push($users_arr['data'], $user_item);
+            array_push($json_result['data'], $user_item);
         }
 
         // Turn to JSON & Output
-        echo json_encode($users_arr);
+        echo json_encode($json_result);
     } else {
         // No posts
+        $json_result["message"] = "No Users found.";
         echo json_encode(
-            array('message' => 'No Users Found')
+            $json_result
         );
     }
 } else {
-    /**
-     * WHEN USING SINGLE, USER CAN ONLY RETRIEVE THEIR OWN INFORMATION. ONLY ADMINS CAN RETRIEVE ALL
-     */
     // Get ID
     $user->id = isset($_GET['id']) ? $_GET['id'] : die();
+
+    // Check if user has authorization
+    if ($access > 1 || $user->id != $id) {
+        $json_result["code"] = 401;
+        $json_result["message"] = "Unauthorized.";
+        echo $json_result;
+        die();
+    }
 
     // Get information
     $user->read_single();
 
     if (!isset($user->email)) {
-        echo json_encode(array(
-            "message" => "No Users Found."
-        ));
+        $json_result["message"] = "No Users found.";
+        echo json_encode($json_result);
         die();
     }
 
     // Create array
-    $user_arr = array(
+    $json_result = array(
         'id' => $user->id,
         'firstname' => $user->firstname,
         'lastname' => $user->lastname,
@@ -90,5 +131,5 @@ if (isset($_GET['all'])) {
     );
 
     // Make JSON
-    echo json_encode($user_arr);
+    echo json_encode($json_result);
 }
