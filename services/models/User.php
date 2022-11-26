@@ -71,6 +71,7 @@ class User
         $this->created = $row['created'];
         $this->img_link = $row['img_link'];
         $this->access_level = intval($row['access_level']);
+        $this->password = $row['password'];
     }
 
     public function create()
@@ -123,7 +124,7 @@ class User
     }
 
     // UNUSED AND UNTESTED
-    private function update()
+    public function update()
     {
         $query = 'UPDATE ' . $this->table . 'SET 
         firstname = :firstname,
@@ -132,6 +133,7 @@ class User
         phone = :phone,
         address = :address,
         balance = :balance,
+        img_link = :img_link
         credit_limit = :credit_limit WHERE id = :id';
 
         // Prepare statement
@@ -144,6 +146,7 @@ class User
         $this->phone = filter_var($this->phone, FILTER_SANITIZE_NUMBER_INT);
         $this->address = htmlspecialchars(strip_tags($this->lastname));
         $this->credit_limit = intval(filter_var($this->credit_limit, FILTER_SANITIZE_NUMBER_INT));
+        $this->img_link = htmlspecialchars(strip_tags($this->img_link));
         $this->balance = floatval(filter_var($this->balance, FILTER_SANITIZE_NUMBER_FLOAT));
 
         // Bind data
@@ -154,7 +157,16 @@ class User
         $stmt->bindParam(':address', $this->address);
         $stmt->bindParam(':balance', $this->balance);
         $stmt->bindParam(':credit_limit', $this->credit_limit);
+        $stmt->bindParam(':img_link', $this->img_link);
         $stmt->bindParam(':id', $this->id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        // Print error if something goes wrong
+        printf("Error: %s.\n", $stmt->error);
+        return false;
     }
 
     private function setProperties()
