@@ -132,7 +132,7 @@ class User
         phone = :phone,
         address = :address,
         balance = :balance,
-        credit_limit = :credit_limit';
+        credit_limit = :credit_limit WHERE id = :id';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -152,9 +152,9 @@ class User
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':phone', $this->phone);
         $stmt->bindParam(':address', $this->address);
-        $stmt->bindParam(':credit_limit', $this->credit_limit);
         $stmt->bindParam(':balance', $this->balance);
-        $stmt->bindParam(':password', $this->password);
+        $stmt->bindParam(':credit_limit', $this->credit_limit);
+        $stmt->bindParam(':id', $this->id);
     }
 
     private function setProperties()
