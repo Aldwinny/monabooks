@@ -71,6 +71,15 @@ if (!isset($data->password)) {
     }
 }
 
+// If an access_level change was attempted, only admins (access_level = 0) must have the power to do so.
+if (isset($data->access_level)) {
+    if ($payload['access_level'] < 1) {
+        $user->access_level = $data->access_level;
+    } else {
+        $user->access_level = $payload['access_level'];
+    }
+}
+
 // SET all credentials & prepare for modification
 $user->firstname = $data->firstname;
 $user->lastname = $data->lastname;
@@ -84,6 +93,7 @@ $user->password = $data->password;
 if ($user->update()) {
     $json_result["code"] = 200;
     $json_result["message"] = "Data change request successful!";
+    $json_result["token"] = Token::getToken($user->id, $user->firstname, $user->lastname, 2); // HARDCODE. PLS CHANGE
     echo json_encode($json_result);
     die();
 }

@@ -5,7 +5,7 @@ class Books
     private $conn;
 
     // Put table here
-    private $table = 'products';
+    private $table = 'books';
 
     // Properties
     public $id;

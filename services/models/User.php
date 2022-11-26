@@ -134,7 +134,8 @@ class User
         address = :address,
         balance = :balance,
         img_link = :img_link
-        credit_limit = :credit_limit WHERE id = :id';
+        credit_limit = :credit_limit
+        access_level = :access_level WHERE id = :id';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -158,6 +159,7 @@ class User
         $stmt->bindParam(':balance', $this->balance);
         $stmt->bindParam(':credit_limit', $this->credit_limit);
         $stmt->bindParam(':img_link', $this->img_link);
+        $stmt->bindParam(':access_level', $this->access_level);
         $stmt->bindParam(':id', $this->id);
 
         if ($stmt->execute()) {
