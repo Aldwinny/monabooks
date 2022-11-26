@@ -66,11 +66,11 @@ class User
         $this->email = $row['email'];
         $this->phone = $row['phone'];
         $this->address = $row['address'];
-        $this->balance = $row['balance'];
-        $this->credit_limit = $row['credit_limit'];
+        $this->balance = floatval($row['balance']);
+        $this->credit_limit = intval($row['credit_limit']);
         $this->created = $row['created'];
         $this->img_link = $row['img_link'];
-        $this->access_level = $row['access_level'];
+        $this->access_level = intval($row['access_level']);
     }
 
     public function create()
@@ -95,8 +95,8 @@ class User
         $this->email = filter_var($this->email, FILTER_SANITIZE_EMAIL);
         $this->phone = filter_var($this->phone, FILTER_SANITIZE_NUMBER_INT);
         $this->address = htmlspecialchars(strip_tags($this->lastname));
-        $this->credit_limit = filter_var($this->credit_limit, FILTER_SANITIZE_NUMBER_INT);
-        $this->balance = filter_var($this->balance, FILTER_SANITIZE_NUMBER_FLOAT);
+        $this->credit_limit = intval(filter_var($this->credit_limit, FILTER_SANITIZE_NUMBER_INT));
+        $this->balance = floatval(filter_var($this->balance, FILTER_SANITIZE_NUMBER_FLOAT));
 
         // Hash + Salt password
         $this->password = password_hash($this->password, PASSWORD_BCRYPT);
@@ -122,6 +122,41 @@ class User
         return false;
     }
 
+    // UNUSED AND UNTESTED
+    private function update()
+    {
+        $query = 'UPDATE ' . $this->table . 'SET 
+        firstname = :firstname,
+        lastname = :lastname,
+        email = :email,
+        phone = :phone,
+        address = :address,
+        balance = :balance,
+        credit_limit = :credit_limit';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Clean data
+        $this->firstname = htmlspecialchars(strip_tags($this->firstname));
+        $this->lastname = htmlspecialchars(strip_tags($this->lastname));
+        $this->email = filter_var($this->email, FILTER_SANITIZE_EMAIL);
+        $this->phone = filter_var($this->phone, FILTER_SANITIZE_NUMBER_INT);
+        $this->address = htmlspecialchars(strip_tags($this->lastname));
+        $this->credit_limit = intval(filter_var($this->credit_limit, FILTER_SANITIZE_NUMBER_INT));
+        $this->balance = floatval(filter_var($this->balance, FILTER_SANITIZE_NUMBER_FLOAT));
+
+        // Bind data
+        $stmt->bindParam(':firstname', $this->firstname);
+        $stmt->bindParam(':lastname', $this->lastname);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':phone', $this->phone);
+        $stmt->bindParam(':address', $this->address);
+        $stmt->bindParam(':credit_limit', $this->credit_limit);
+        $stmt->bindParam(':balance', $this->balance);
+        $stmt->bindParam(':password', $this->password);
+    }
+
     private function setProperties()
     {
         $query = 'SELECT * FROM ' . $this->table . ' WHERE email= :email';
@@ -138,7 +173,7 @@ class User
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Set properties
-        $this->id = $row['user_id'];
+        $this->id = intval($row['user_id']);
         $this->img_link = $row['img_link'];
         $this->created = $row['created'];
         $this->access_level = $row['access_level'];

@@ -43,12 +43,14 @@ class Token
     {
         $data = explode('.', $token);
 
-        $signature = hash_hmac('sha256', $data[0] . "." . $data[1], Token::$secret, true);
 
-        if ($signature != $data[3]) {
+        $signature = Token::base64UrlGenerate(hash_hmac('sha256', $data[0] . "." . $data[1], Token::$secret, true));
+
+        if ($signature != $data[2]) {
             return false;
+        } else {
+            return true;
         }
-        return true;
     }
 
     public static function getHeader($token)

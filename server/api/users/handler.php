@@ -10,6 +10,7 @@ header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,
 
 include_once '../../config/Database.php';
 include_once '../../models/User.php';
+include_once '../../utils/token.php';
 
 // Instantiate DB & Connect
 $database = new Database();
@@ -32,18 +33,18 @@ if (!isset($headers['Authorization'])) {
 }
 
 // Get token payload from token
-$token = $headers['Authorization'];
+$token = explode(" ", $headers['Authorization'])[1];
 $payload = json_decode(Token::getPayload($token), true);
 
 // Separate information from payload
-$id = $payload["id"];
+$id = $payload["user_id"];
 $access = $payload["access_level"];
 
 // Check token validity
 if (!Token::verifyToken($token)) {
     $json_result["code"] = 400;
     $json_result["message"] = "Bad Token, Please login again.";
-    echo $json_result;
+    echo json_encode($json_result);
     die();
 }
 
@@ -53,7 +54,7 @@ if (isset($_GET['all'])) {
     if ($access > 1) {
         $json_result["code"] = 401;
         $json_result["message"] = "Unauthorized.";
-        echo $json_result;
+        echo json_encode($json_result);
         die();
     }
 
@@ -98,13 +99,13 @@ if (isset($_GET['all'])) {
     }
 } else {
     // Get ID
-    $user->id = isset($_GET['id']) ? $_GET['id'] : die();
+    $user->id = isset($_GET['id']) ? intval($_GET['id']) : die();
 
     // Check if user has authorization
-    if ($access > 1 || $user->id != $id) {
+    if (!$access > 1 || $user->id != $id) {
         $json_result["code"] = 401;
         $json_result["message"] = "Unauthorized.";
-        echo $json_result;
+        echo json_encode($json_result);
         die();
     }
 
@@ -119,7 +120,7 @@ if (isset($_GET['all'])) {
 
     // Create array
     $json_result = array(
-        'id' => $user->id,
+        'id' => intval($user->id),
         'firstname' => $user->firstname,
         'lastname' => $user->lastname,
         'email' => $user->email,
