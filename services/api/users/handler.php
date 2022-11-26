@@ -28,7 +28,7 @@ $headers = apache_request_headers();
 if (!isset($headers['Authorization'])) {
     $json_result["code"] = 401;
     $json_result["message"] = "Login Required.";
-    echo $json_result;
+    echo json_encode($json_result);
     die();
 }
 
