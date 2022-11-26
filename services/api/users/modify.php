@@ -37,8 +37,8 @@ $token = explode(" ", $headers['Authorization'])[1];
 $payload = json_decode(Token::getPayload($token), true);
 
 // Separate information from payload
-$id = $payload["user_id"];
-$access = $payload["access_level"];
+$id = intval($payload["user_id"]);
+$access = intval($payload["access_level"]);
 
 // Check token validity
 if (!Token::verifyToken($token)) {
@@ -57,13 +57,13 @@ if (!isset($data->password)) {
     echo json_encode($json_result);
     die();
 } else {
-    $user->$id = $payload['user_id'];
+    $user->id = $id;
 
     // Obtain user information
     $user->read_single();
 
     // Validate user password
-    if ($user->password !== password_hash($data->password, PASSWORD_BCRYPT)) {
+    if (!password_verify($data->password, $user->password)) {
         $json_result["code"] = 401;
         $json_result["message"] = "Wrong credentials! Password incorrect!";
         echo json_encode($json_result);
@@ -72,12 +72,10 @@ if (!isset($data->password)) {
 }
 
 // If an access_level change was attempted, only admins (access_level = 0) must have the power to do so.
-if (isset($data->access_level)) {
-    if ($payload['access_level'] < 1) {
-        $user->access_level = $data->access_level;
-    } else {
-        $user->access_level = $payload['access_level'];
-    }
+if (isset($data->access_level) && $access < 1) {
+    $user->access_level = intval($data->access_level);
+} else {
+    $user->access_level = $access;
 }
 
 // SET all credentials & prepare for modification
@@ -86,14 +84,14 @@ $user->lastname = $data->lastname;
 $user->email = $data->email;
 $user->phone = $data->phone;
 $user->address = $data->address;
-$user->credit_limit = $data->credit_limit;
-$user->balance = $data->balance;
+$user->credit_limit = intval($data->credit_limit);
+$user->balance = floatval($data->balance);
 $user->password = $data->password;
 
 if ($user->update()) {
     $json_result["code"] = 200;
     $json_result["message"] = "Data change request successful!";
-    $json_result["token"] = Token::getToken($user->id, $user->firstname, $user->lastname, 2); // HARDCODE. PLS CHANGE
+    $json_result["token"] = Token::getToken($user->id, $user->firstname, $user->lastname, $user->access_level); // HARDCODE. PLS CHANGE
     echo json_encode($json_result);
     die();
 }
