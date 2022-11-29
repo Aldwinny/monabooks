@@ -8,7 +8,7 @@ Mona books is a full-stack website created using HTML, CSS, JS for frontend and 
 
 ```
 root
-|--- Server
+|--- Services
 | |--- u                             # Uploads
 | | |--- user                        # User Images folder
 | | |--- product                     # Product Images folder

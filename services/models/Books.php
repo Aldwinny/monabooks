@@ -6,6 +6,10 @@ class Books
 
     // Put table here
     private $table = 'books';
+    private $authors_list_table = 'authors_list';
+    private $authors_table = 'authors';
+    private $genres_list_table = 'genres_list';
+    private $genres_table = 'genres';
 
     // Properties
     public $id;
@@ -28,7 +32,10 @@ class Books
     // Get all books
     public function read()
     {
-        $query = 'SELECT * FROM ' . $this->table;
+        $query = 'SELECT books.*, GROUP_CONCAT(DISTINCT author.name) authors, GROUP_CONCAT(DISTINCT genre.name) genres FROM ' . $this->table . '
+        books JOIN ' . $this->authors_list_table . ' auth ON books.book_id = auth.book_id JOIN ' .
+            $this->authors_table . ' author ON auth.author_id = author.author_id JOIN ' . $this->genres_list_table .
+            ' gen ON books.book_id = gen.book_id JOIN ' . $this->genres_table . ' genre ON gen.genre_id = genre.genre_id GROUP BY books.book_id';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -39,15 +46,44 @@ class Books
         return $stmt;
     }
 
+    public function read_by_genre()
+    {
+        $query = 'SELECT books.*, GROUP_CONCAT(DISTINCT author.name) authors, GROUP_CONCAT(DISTINCT genre.name) genres FROM ' . $this->table . '
+        books JOIN ' . $this->authors_list_table . ' auth ON books.book_id = auth.book_id JOIN ' .
+            $this->authors_table . ' author ON auth.author_id = author.author_id JOIN ' . $this->genres_list_table .
+            ' gen ON books.book_id = gen.book_id JOIN ' . $this->genres_table . ' genre ON gen.genre_id = genre.genre_id WHERE genre.name IN (?) GROUP BY books.book_id';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        if (count($this->genres) == 1) {
+            $stmt->bindParam(1, $this->genres);
+        } else {
+            $replacer = "";
+
+            // UNDER CONSTRUCTION
+            for ($i = 0; $i < count($this->genres); $i++) {
+            }
+        }
+
+        // Execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
+
     public function read_single()
     {
-        $query = 'SELECT * FROM ' . $this->table . 'WHERE book_id = ? LIMIT 0,1';
+        $query = 'SELECT books.*, GROUP_CONCAT(DISTINCT author.name) authors, GROUP_CONCAT(DISTINCT genre.name) genres FROM ' . $this->table . '
+                 books JOIN ' . $this->authors_list_table . ' auth ON books.book_id = auth.book_id JOIN ' .
+            $this->authors_table . ' author ON auth.author_id = author.author_id JOIN ' . $this->genres_list_table .
+            ' gen ON books.book_id = gen.book_id JOIN ' . $this->genres_table . ' genre ON gen.genre_id = genre.genre_id WHERE books.book_id = :bid GROUP BY books.book_id LIMIT 0,1';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
 
         // Bind parameters
-        $stmt->bindParam(1, $this->id);
+        $stmt->bindParam(":bid", $this->id);
 
         // Execute Query
         $stmt->execute();
@@ -64,5 +100,35 @@ class Books
         $this->book_type = $row['book_type'];
         $this->cover_type = $row['cover_type'];
         $this->ed = $row['ed'];
+
+        // Set non-inherent Properties
+        $this->authors = $row['authors'];
+        $this->genres = $row['genres'];
+    }
+
+    public function get_genres()
+    {
+        $query = 'SELECT * FROM ' . $this->genres_table;
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    public function get_authors()
+    {
+        $query = 'SELECT * FROM ' . $this->authors_table;
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        $stmt->execute();
+
+        return $stmt;
     }
 }

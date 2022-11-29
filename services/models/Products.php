@@ -5,6 +5,8 @@ class Products
 
     // Put table here
     private $table = 'products';
+    private $attr_table = 'product_attributes';
+    private $category_table = 'product_categories';
 
     // Properties
     public $id;
@@ -15,7 +17,7 @@ class Products
     public $img_link;
 
     // Non-inherent Properties
-    public $category_list;
+    public $categories;
     public $book;
 
 
@@ -28,7 +30,8 @@ class Products
     // Get all products
     public function read()
     {
-        $query = 'SELECT * FROM ' . $this->table;
+        $query = 'SELECT p.*, GROUP_CONCAT(DISTINCT cat.category_name) category_name FROM ' . $this->table . ' p JOIN ' . $this->attr_table . ' attr ON p.product_id = attr.product_id JOIN ' . $this->category_table . ' cat ON attr.category_id = cat.category_id GROUP BY p.product_id';
+
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -41,7 +44,7 @@ class Products
 
     public function read_single()
     {
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE product_id = ? LIMIT 0,1';
+        $query = 'SELECT p.*, GROUP_CONCAT(DISTINCT cat.category_name) category_name FROM ' . $this->table . ' p JOIN ' . $this->attr_table . ' attr ON p.product_id = attr.product_id JOIN ' . $this->category_table . ' cat ON attr.category_id = cat.category_id WHERE p.product_id = ? GROUP BY p.product_id';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -59,6 +62,7 @@ class Products
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Set properties
+        $this->id = $row['product_id'];
         $this->name = $row['name'];
         $this->description = $row['description'];
         $this->price = $row['price'];
@@ -66,6 +70,6 @@ class Products
         $this->img_link = $row['img_link'];
 
         // Set non-inherent properties
-
+        $this->categories = $row['category_name'];
     }
 }

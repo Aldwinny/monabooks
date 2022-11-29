@@ -99,7 +99,14 @@ if (isset($_GET['all'])) {
     }
 } else {
     // Get ID
-    $user->id = isset($_GET['id']) ? intval($_GET['id']) : die();
+    $user->id = isset($_GET['id']) ? intval($_GET['id']) : -1;
+
+    if ($user->id < 1) {
+        $json_result["status"] = 404;
+        $json_result["message"] = "The requested resource was not found on this server.";
+        echo json_encode($json_result);
+        die();
+    }
 
     // Check if user has authorization
     if (!$access > 1 || $user->id != $id) {
@@ -113,6 +120,7 @@ if (isset($_GET['all'])) {
     $user->read_single();
 
     if (!isset($user->email)) {
+        $json_result["code"] = 404;
         $json_result["message"] = "No Users found.";
         echo json_encode($json_result);
         die();
