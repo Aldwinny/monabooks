@@ -95,14 +95,6 @@ if (isset($_GET['all'])) {
     // Prepare books genres variable for binding
     if (count($genres) >= 1) {
         $book->genres = $genres;
-        $result = $book->read_by_genre();
-
-        foreach ($genres as $genre) {
-            $book->genres = $book->genres . "'" . $genre . "', ";
-        }
-        $book->genres = substr($book->genres, 0, -1);
-    } else if (count($genres) == 1) {
-        $book->genres = "" . $genres[0] . "";
     } else {
         $json_result["status"] = 404;
         $json_result["message"] = "No books found.";
@@ -110,6 +102,7 @@ if (isset($_GET['all'])) {
         die();
     }
 
+    $result = $book->read_by_genre();
 
     // Get row count
     $num = $result->rowCount();

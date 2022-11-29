@@ -72,4 +72,17 @@ class Products
         // Set non-inherent properties
         $this->categories = $row['category_name'];
     }
+
+    public function read_categories()
+    {
+        $query = "SELECT * FROM " . $this->category_table;
+
+        // Prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
 }

@@ -53,23 +53,43 @@ class Books
             $this->authors_table . ' author ON auth.author_id = author.author_id JOIN ' . $this->genres_list_table .
             ' gen ON books.book_id = gen.book_id JOIN ' . $this->genres_table . ' genre ON gen.genre_id = genre.genre_id WHERE genre.name IN (?) GROUP BY books.book_id';
 
+        // Define a replacer that changes the query based on number of items in genres variable
+        $replacer = "";
+
+        for ($i = 0; $i < count($this->genres); $i++) {
+            $replacer = $replacer . "?, ";
+        }
+        $replacer = substr($replacer, 0, -2);
+
+        // Replace query with new query
+        $query = str_replace("?", $replacer, $query);
+
         // Prepare statement
         $stmt = $this->conn->prepare($query);
 
-        if (count($this->genres) == 1) {
-            $stmt->bindParam(1, $this->genres);
-        } else {
-            $replacer = "";
-
-            // UNDER CONSTRUCTION
-            for ($i = 0; $i < count($this->genres); $i++) {
-            }
+        // Bind every element in array to query
+        for ($i = 0; $i < count($this->genres); $i++) {
+            $stmt->bindParam($i + 1, $this->genres[$i]);
         }
+
+
 
         // Execute query
         $stmt->execute();
 
         return $stmt;
+    }
+
+    // Reserved function
+    public function read_by_publisher()
+    {
+        return null;
+    }
+
+    // Reserved function
+    public function read_by_author()
+    {
+        return null;
     }
 
     public function read_single()
@@ -122,6 +142,19 @@ class Books
     public function get_authors()
     {
         $query = 'SELECT * FROM ' . $this->authors_table;
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    public function get_publishers()
+    {
+        $query = 'SELECT DISTINCT publishers FROM ' . $this->table;
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);

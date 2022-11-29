@@ -55,6 +55,35 @@ if (isset($_GET['all'])) {
         echo json_encode($json_result);
         die();
     }
+} else if (isset($_GET['categories'])) {
+    $result = $product->read_categories();
+    // Get row count
+    $num = $result->rowCount();
+
+    // Check if any categories exist
+    if ($num > 0) {
+        // Post Array
+        $json_result['data'] = array();
+
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+
+            $product_category_item = array(
+                'category_id' => intval($category_id),
+                'category_name' => $category_name,
+                'category_description' => $category_description,
+            );
+
+            // Push to "data"
+            array_push($json_result['data'], $product_category_item);
+        }
+        echo json_encode($json_result);
+    } else {
+        $json_result["status"] = 404;
+        $json_result["message"] = "The requested resource was not found on this server.";
+        echo json_encode($json_result);
+        die();
+    }
 } else {
     $product->id = isset($_GET['id']) ? intval($_GET['id']) : -1;
 
