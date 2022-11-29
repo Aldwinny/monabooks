@@ -74,6 +74,41 @@ class User
         $this->password = $row['password'];
     }
 
+    public function read_single_by_email()
+    {
+        $query = 'SELECT * FROM ' . $this->table . ' WHERE email = ? LIMIT 0,1';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Bind parameters
+        $stmt->bindParam(1, $this->email);
+
+        // Execute Query
+        $stmt->execute();
+
+        if ($stmt->rowCount() == 0) {
+            return false;
+        }
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Set properties
+        $this->id = $row['user_id'];
+        $this->firstname = $row['firstname'];
+        $this->lastname = $row['lastname'];
+        $this->email = $row['email'];
+        $this->phone = $row['phone'];
+        $this->address = $row['address'];
+        $this->balance = floatval($row['balance']);
+        $this->credit_limit = intval($row['credit_limit']);
+        $this->created = $row['created'];
+        $this->img_link = $row['img_link'];
+        $this->access_level = intval($row['access_level']);
+        $this->password = $row['password'];
+        return true;
+    }
+
     public function create()
     {
         $query = 'INSERT INTO ' . $this->table . ' 

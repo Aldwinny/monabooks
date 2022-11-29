@@ -25,6 +25,36 @@ $json_result = array();
 // Get all headers
 $headers = apache_request_headers();
 
+// Check if user is attempting to login
+if (isset($_GET['login'], $_POST['email'], $_POST['password'])) {
+    $user->email = $_POST['email'];
+
+    $success = $user->read_single_by_email();
+
+    if ($success) {
+        if (password_verify($_POST['password'], $user->password)) {
+            $token = Token::getToken($user->id, $user->firstname, $user->lastname, $user->access_level);
+
+            $json_result["code"] = 200;
+            $json_result["message"] = "Login complete.";
+            $json_result["token"] = $token;
+            echo json_encode($json_result);
+            die();
+        } else {
+            $json_result["code"] = 401;
+            $json_result["message"] = "Incorrect Password.";
+            echo json_encode($json_result);
+            die();
+        }
+    } else {
+        $json_result["code"] = 401;
+        $json_result["message"] = "User account not found.";
+        echo json_encode($json_result);
+        die();
+    }
+}
+
+// Check if user has a token
 if (!isset($headers['Authorization'])) {
     $json_result["code"] = 401;
     $json_result["message"] = "Login Required.";
