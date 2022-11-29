@@ -88,6 +88,71 @@ class Products
 
     public function create()
     {
+        $query = 'INSERT INTO ' . $this->table . ' 
+        SET
+         name = :name,
+         description = :description,
+         price = :price,
+         supply = :supply,
+         img_link = :img_link';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Clean data
+        $this->name = Str::sanitizeString($this->name);
+        $this->description = Str::sanitizeString($this->description);
+        $this->price = Str::sanitizeDouble($this->price);
+        $this->supply = Str::sanitizeInt($this->supply);
+        $this->img_link = Str::sanitizeString($this->img_link);
+
+        // Bind data
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':description', $this->description);
+        $stmt->bindParam(':price', $this->price);
+        $stmt->bindParam(':supply', $this->supply);
+        $stmt->bindParam(':img_link', $this->name);
+
+        if ($stmt->execute()) {
+            if (isset($this->book)) {
+                // 1. Create book record
+                // 2. Create authors record
+                // 3. Create genre record
+                // 4. Associate each authors and genres to the book
+
+                $this->book->create();
+                $this->book->create_authors();
+                $this->book->create_genres();
+                $this->book->create_associations();
+            } else {
+                // 1. Create categories record
+                // 2. Associate category to product
+            }
+        }
+        // Print error if something goes wrong
+        printf("Error: %s.\n", $stmt->error);
+
         return false;
+    }
+
+    /**
+     * Note: $this->categories must be an array of categories formatted by handler.php
+     * data sanitation will be performed here using Str::toUpperCamelCase
+     * 
+     * Returns: true if success, false if fail
+     * Populates: $this->categories with an array of id associated to the inserted genres
+     */
+    public function create_categories()
+    {
+        $query = "INSERT IGNORE INTO " . $this->category_table . "(`name`)";
+    }
+
+    /**
+     * Note: This function checks if category array contains numbers.
+     * It then checks if an association is already made between current products object
+     * and product_category. If there is no association, it will create one.
+     */
+    public function create_associations()
+    {
     }
 }

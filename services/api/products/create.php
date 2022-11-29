@@ -48,6 +48,13 @@ $payload = json_decode(Token::getPayload($token), true);
 $id = intval($payload["user_id"]);
 $access = intval($payload["access_level"]);
 
+if ($access > 1) {
+    $json_result["code"] = 401;
+    $json_result["message"] = "Unauthorized.";
+    echo json_encode($json_result);
+    die();
+}
+
 // Get raw posted data
 $data = json_decode(file_get_contents("php://input"));
 
@@ -58,7 +65,7 @@ $product->supply = $data->supply;
 $product->img_link = $data->img_link;
 
 // Must be a set of words divided by comma
-$product->categories = $data->categories;
+$product->categories = explode(',', $data->categories);
 
 // Book data is either set or empty
 if (isset($data->book)) {

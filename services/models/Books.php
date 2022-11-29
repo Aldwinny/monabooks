@@ -207,7 +207,7 @@ class Books
 
             // Execute query and retrieve result
             $stmt2->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $row = $stmt2->fetch(PDO::FETCH_ASSOC);
 
             // Set ID property
             $this->id = intval($row['book_id']);
@@ -229,7 +229,7 @@ class Books
      */
     public function create_authors()
     {
-        $query = 'INSERT INTO ' . $this->authors_table . ' (`name`) VALUES ';
+        $query = 'INSERT IGNORE INTO ' . $this->authors_table . ' (`name`) VALUES ';
 
         // Create multiple values query if authors is many
         if (count($this->authors) > 1) {
@@ -304,7 +304,7 @@ class Books
      */
     public function create_genres()
     {
-        $query = "INSERT INTO " . $this->genres_table . " (`name`) VALUES ";
+        $query = "INSERT IGNORE INTO " . $this->genres_table . " (`name`) VALUES ";
 
         // Create multiple values query if genres is many
         if (count($this->genres) > 1) {
@@ -368,5 +368,125 @@ class Books
         printf("Error: %s.\n", $stmt->error);
 
         return false;
+    }
+
+    /**
+     * Note: This function checks if either genres or authors arrays are numbers.
+     * It then checks if an association is already made between current books object
+     * and authors/genres. If there is no association, it will create one.
+     */
+    public function create_associations()
+    {
+        // Checks if either authors or genres have contents
+        if (!(isset($this->authors) || isset($this->genres))) {
+            return false;
+        }
+
+        // Checks if all contents in authors are numeric
+        if ($this->authors == array_filter($this->authors, 'is_numeric')) {
+            $query_authors_list = 'SELECT DISTINCT * FROM ' . $this->authors_list_table . ' 
+            WHERE 
+            book_id = ?';
+
+            // Prepare statement
+            $al_stmt = $this->conn->prepare($query_authors_list);
+
+            // Bind parameters
+            $al_stmt->bindParam(1, $this->id);
+
+            // Execute Query
+            $al_stmt->execute();
+
+            // If there are no associations, create one.
+            // Otherwise, check if associations match that of array
+            if ($al_stmt->rowCount() == 0) {
+                $al_assocs = $this->authors;
+            } else {
+                $al_comparator = array();
+                while ($row = $al_stmt->fetch(PDO::FETCH_ASSOC)) {
+                    array_push($al_comparator, $row['author_id']);
+                }
+
+                // Leave only those that will be associated
+                $al_assocs = array_diff($this->authors, $al_comparator);
+            }
+        }
+
+        // Checks if all contents in genres are numeric
+        if ($this->genres == array_filter($this->genres, 'is_numeric')) {
+            $query_genres_list = 'SELECT DISTINCT * FROM ' . $this->genres_list_table . ' 
+            WHERE 
+            book_id = ?';
+
+            // Prepare statement
+            $gl_stmt = $this->conn->prepare($query_genres_list);
+
+            // Bind parameters
+            $gl_stmt->bindParam(1, $this->id);
+
+            // Execute Query
+            $gl_stmt->execute();
+
+            // If there are no associations, create one.
+            // Otherwise, check if associations match that of array
+            if ($gl_stmt->rowCount() == 0) {
+                $gl_assocs = $this->genres;
+            } else {
+                $gl_comparator = array();
+                while ($row = $gl_stmt->fetch(PDO::FETCH_ASSOC)) {
+                    array_push($gl_comparator, $row['genre_id']);
+                }
+
+                // Leave only those that will be associated
+                $gl_assocs = array_diff($this->genres, $al_comparator);
+            }
+        }
+
+        // If there are items that can be associated in al_assocs array
+        if (!(count($al_assocs) == 0)) {
+            $al_assocs_query = 'INSERT INTO ' . $this->authors_list_table . ' (`book_id`, `author_id`) VALUES ';
+
+            for ($i = 0; $i < count($al_assocs); $i++) {
+                $al_assocs_query . '(:book_id' . $i . ', :author_id' . $i . '), ';
+            }
+
+            // Finalize query
+            $al_assocs_query = substr($al_assocs_query, 0, -2);
+
+            // Prepare statement
+            $al_assocs_stmt = $this->conn->prepare($al_assocs_query);
+
+            // Bind data
+            for ($i = 0; $i < count($al_assocs); $i++) {
+                $al_assocs_stmt->bindParam(':book_id' . $i, $this->id);
+                $al_assocs_stmt->bindParam(':author_id' . $i, $this->authors[$i]);
+            }
+
+            $al_assocs_stmt->execute();
+        }
+
+        // If there are items that can be associated in al_assocs array
+        if (!(count($gl_assocs) == 0)) {
+            $gl_assocs_query = 'INSERT INTO ' . $this->genres_list_table . ' (`book_id`, `author_id`) VALUES ';
+
+            for ($i = 0; $i < count($gl_assocs); $i++) {
+                $gl_assocs_query . '(:book_id' . $i . ', :genre_id' . $i . '), ';
+            }
+
+            // Finalize query
+            $gl_assocs_query = substr($gl_assocs_query, 0, -2);
+
+            // Prepare statement
+            $gl_assocs_stmt = $this->conn->prepare($gl_assocs_query);
+
+            // Bind data
+            for ($i = 0; $i < count($gl_assocs); $i++) {
+                $gl_assocs_stmt->bindParam(':book_id' . $i, $this->id);
+                $gl_assocs_stmt->bindParam(':genre_id' . $i, $this->genres[$i]);
+            }
+
+            $gl_assocs_stmt->execute();
+        }
+        return true;
     }
 }
