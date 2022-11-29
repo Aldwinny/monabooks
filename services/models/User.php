@@ -1,4 +1,6 @@
 <?php
+
+include '../utils/string.php';
 class User
 {
     private $conn;
@@ -126,13 +128,13 @@ class User
         $stmt = $this->conn->prepare($query);
 
         // Clean data
-        $this->firstname = htmlspecialchars(strip_tags($this->firstname));
-        $this->lastname = htmlspecialchars(strip_tags($this->lastname));
-        $this->email = filter_var($this->email, FILTER_SANITIZE_EMAIL);
-        $this->phone = filter_var($this->phone, FILTER_SANITIZE_NUMBER_INT);
-        $this->address = htmlspecialchars(strip_tags($this->address));
-        $this->credit_limit = intval(filter_var($this->credit_limit, FILTER_SANITIZE_NUMBER_INT));
-        $this->balance = floatval(filter_var($this->balance, FILTER_SANITIZE_NUMBER_FLOAT));
+        $this->firstname = Str::sanitizeString($this->firstname);
+        $this->lastname = Str::sanitizeString($this->lastname);
+        $this->email = Str::sanitizeEmail($this->email);
+        $this->phone = Str::sanitizeInt($this->phone);
+        $this->address = Str::sanitizeString($this->address);
+        $this->credit_limit = Str::sanitizeInt($this->credit_limit);
+        $this->balance = Str::sanitizeDouble($this->balance);
 
         // Hash + Salt password
         $this->password = password_hash($this->password, PASSWORD_BCRYPT);
@@ -176,14 +178,14 @@ class User
         $stmt = $this->conn->prepare($query);
 
         // Clean data
-        $this->firstname = htmlspecialchars(strip_tags($this->firstname));
-        $this->lastname = htmlspecialchars(strip_tags($this->lastname));
-        $this->email = filter_var($this->email, FILTER_SANITIZE_EMAIL);
-        $this->phone = filter_var($this->phone, FILTER_SANITIZE_NUMBER_INT);
-        $this->address = htmlspecialchars(strip_tags($this->address));
-        $this->credit_limit = intval(filter_var($this->credit_limit, FILTER_SANITIZE_NUMBER_INT));
-        $this->img_link = htmlspecialchars(strip_tags($this->img_link));
-        $this->balance = floatval(filter_var($this->balance, FILTER_SANITIZE_NUMBER_FLOAT));
+        $this->firstname = Str::sanitizeString($this->firstname);
+        $this->lastname = Str::sanitizeString($this->lastname);
+        $this->email = Str::sanitizeEmail($this->email);
+        $this->phone = Str::sanitizeInt($this->phone);
+        $this->address = Str::sanitizeString($this->address);
+        $this->credit_limit = Str::sanitizeInt($this->credit_limit);
+        $this->email = Str::sanitizeString($this->img_link);
+        $this->balance = Str::sanitizeDouble($this->balance);
 
         // Bind data
         $stmt->bindParam(':firstname', $this->firstname);

@@ -85,4 +85,9 @@ class Products
 
         return $stmt;
     }
+
+    public function create()
+    {
+        return false;
+    }
 }

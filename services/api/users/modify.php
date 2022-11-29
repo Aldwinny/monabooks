@@ -16,15 +16,14 @@ $db = $database->connect();
 // Instantiate user object
 $user = new User($db);
 
-// If no token, return 401
-// If token broken, return 400
-
 // Create JSON Result variable
 $json_result = array();
 
 // Get all headers
 $headers = apache_request_headers();
 
+// If no token, return 401
+// If token broken, return 400
 if (!isset($headers['Authorization'])) {
     $json_result["code"] = 401;
     $json_result["message"] = "Login Required.";
@@ -34,11 +33,6 @@ if (!isset($headers['Authorization'])) {
 
 // Get token payload from token
 $token = explode(" ", $headers['Authorization'])[1];
-$payload = json_decode(Token::getPayload($token), true);
-
-// Separate information from payload
-$id = intval($payload["user_id"]);
-$access = intval($payload["access_level"]);
 
 // Check token validity
 if (!Token::verifyToken($token)) {
@@ -47,6 +41,12 @@ if (!Token::verifyToken($token)) {
     echo json_encode($json_result);
     die();
 }
+
+$payload = json_decode(Token::getPayload($token), true);
+
+// Separate information from payload
+$id = intval($payload["user_id"]);
+$access = intval($payload["access_level"]);
 
 // Get raw posted data
 $data = json_decode(file_get_contents("php://input"));

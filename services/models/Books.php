@@ -1,5 +1,7 @@
 <?php
 
+include_once '../utils/string.php';
+
 class Books
 {
     private $conn;
@@ -163,5 +165,208 @@ class Books
         $stmt->execute();
 
         return $stmt;
+    }
+
+    public function create()
+    {
+        $query = 'INSERT INTO ' . $this->table . '
+        SET
+         title = :title,
+         publisher = :publisher,
+         book_type = :book_type,
+         cover_type = :cover_type,
+         ed = :ed';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Clean data
+        $this->title = Str::sanitizeString($this->title);
+        $this->publisher = Str::sanitizeString($this->publisher);
+        $this->book_type = Str::sanitizeString($this->book_type);
+        $this->cover_type = Str::sanitizeString($this->cover_type);
+        $this->ed = Str::sanitizeInt($this->ed);
+
+        // Bind data
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':publisher', $this->publisher);
+        $stmt->bindParam(':book_type', $this->book_type);
+        $stmt->bindParam(':cover_type', $this->cover_type);
+        $stmt->bindParam(':ed', $this->ed);
+
+        if ($stmt->execute()) {
+            $q = 'SELECT * FROM ' . $this->table . 'WHERE title = :title AND publisher = :publisher AND ed = :ed';
+
+            // Prepare statement
+            $stmt2 = $this->conn->prepare($q);
+
+            // Bind data
+            $stmt2->bindParam(':title', $this->title);
+            $stmt2->bindParam(':publisher', $this->publisher);
+            $stmt2->bindParam(':ed', $this->ed);
+
+            // Execute query and retrieve result
+            $stmt2->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Set ID property
+            $this->id = intval($row['book_id']);
+
+            return true;
+        }
+        // Print error if something goes wrong
+        printf("Error: %s.\n", $stmt->error);
+
+        return false;
+    }
+
+    /**
+     * Note: $this->authors must be an array of authors formatted by handler.php
+     * data sanitation will be performed here using Str::toUpperCamelCase
+     * 
+     * Returns: true if success, false if fail
+     * Populates: $this->authors with an array of id associated to the inserted authors
+     */
+    public function create_authors()
+    {
+        $query = 'INSERT INTO ' . $this->authors_table . ' (`name`) VALUES ';
+
+        // Create multiple values query if authors is many
+        if (count($this->authors) > 1) {
+            for ($i = 0; $i < count($this->authors); $i++) {
+                $query = $query . "(:name" . strval($i) . "), ";
+            }
+            $query = substr($query, 0, -2);
+        } else {
+            $query = $query . "(:name0)";
+        }
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Bind parameters
+        for ($i = 0; $i < count($this->authors); $i++) {
+            $stmt->bindParam(':name' . strval($i), Str::toUpperCamelCase($this->authors[$i]));
+        }
+
+        // Execute query and turn authors variable to array of IDs
+        if ($stmt->execute()) {
+            $q = 'SELECT * FROM ' . $this->authors_table . 'WHERE name IN (?)';
+
+            $replacer = "";
+            // Prepare the query
+            for ($i = 0; $i < count($this->authors); $i++) {
+                $replacer = $replacer . "?, ";
+            }
+
+            $replacer = substr($replacer, 0, -2);
+            $q = str_replace("?", $replacer, $q);
+
+            // Prepare statement
+            $stmt2 = $this->conn->prepare($q);
+
+            // Bind data
+            for ($i = 0; $i < count($this->authors); $i++) {
+                $stmt2->bindParam($i + 1, $this->authors[$i]);
+            }
+
+            // Execute query
+            $stmt2->execute();
+
+            $num = $stmt2->rowCount();
+
+            // Retrieve results and assign as numbers
+            if ($num > 0) {
+                $this->authors = array();
+
+                // For every author value, push its id to authors
+                while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                    array_push($this->authors, $row['author_id']);
+                };
+            } else {
+                return false;
+            }
+
+            return true;
+        }
+        // Print error if something goes wrong
+        printf("Error: %s.\n", $stmt->error);
+
+        return false;
+    }
+
+    /**
+     * Note: $this->genres must be an array of genres formatted by handler.php
+     * data sanitation will be performed here using Str::toUpperCamelCase
+     * 
+     * Returns: true if success, false if fail
+     * Populates: $this->genres with an array of id associated to the inserted genres
+     */
+    public function create_genres()
+    {
+        $query = "INSERT INTO " . $this->genres_table . " (`name`) VALUES ";
+
+        // Create multiple values query if genres is many
+        if (count($this->genres) > 1) {
+            for ($i = 0; $i < count($this->genres); $i++) {
+                $query = $query . "(:name" . strval($i) . "), ";
+            }
+            $query = substr($query, 0, -2);
+        } else {
+            $query = $query . "(:name0)";
+        }
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Bind parameters
+        for ($i = 0; $i < count($this->genres); $i++) {
+            $stmt->bindParam(':name' . strval($i), Str::toUpperCamelCase($this->genres[$i]));
+        }
+
+        // Execute query
+        if ($stmt->execute()) {
+            $q = 'SELECT * FROM ' . $this->genres_table . 'WHERE name IN (?)';
+
+            $replacer = "";
+            // Prepare the query
+            for ($i = 0; $i < count($this->genres); $i++) {
+                $replacer = $replacer . "?, ";
+            }
+
+            $replacer = substr($replacer, 0, -2);
+            $q = str_replace("?", $replacer, $q);
+
+            // Prepare statement
+            $stmt2 = $this->conn->prepare($q);
+
+            // Bind data
+            for ($i = 0; $i < count($this->genres); $i++) {
+                $stmt2->bindParam($i + 1, $this->genres[$i]);
+            }
+
+            // Execute query
+            $stmt2->execute();
+
+            $num = $stmt2->rowCount();
+
+            // Retrieve results and assign as numbers
+            if ($num > 0) {
+                $this->genres = array();
+
+                // For every genre value, push its id to genres
+                while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                    array_push($this->genres, $row['genre_id']);
+                };
+            } else {
+                return false;
+            }
+
+            return true;
+        }
+        // Print error if something goes wrong
+        printf("Error: %s.\n", $stmt->error);
+
+        return false;
     }
 }
