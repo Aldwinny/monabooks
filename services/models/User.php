@@ -1,6 +1,6 @@
 <?php
 
-include '../utils/string.php';
+include '../../utils/string.php';
 class User
 {
     private $conn;
@@ -163,6 +163,7 @@ class User
     // UNUSED AND UNTESTED
     public function update()
     {
+
         $query = 'UPDATE ' . $this->table . ' SET 
         firstname = :firstname,
         lastname = :lastname,
@@ -174,9 +175,6 @@ class User
         credit_limit = :credit_limit,
         access_level = :access_level WHERE user_id = :id';
 
-        // Prepare statement
-        $stmt = $this->conn->prepare($query);
-
         // Clean data
         $this->firstname = Str::sanitizeString($this->firstname);
         $this->lastname = Str::sanitizeString($this->lastname);
@@ -184,8 +182,11 @@ class User
         $this->phone = Str::sanitizeInt($this->phone);
         $this->address = Str::sanitizeString($this->address);
         $this->credit_limit = Str::sanitizeInt($this->credit_limit);
-        $this->email = Str::sanitizeString($this->img_link);
+        $this->img_link = Str::sanitizeString($this->img_link);
         $this->balance = Str::sanitizeDouble($this->balance);
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
 
         // Bind data
         $stmt->bindParam(':firstname', $this->firstname);

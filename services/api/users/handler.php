@@ -25,6 +25,8 @@ $json_result = array();
 // Get all headers
 $headers = apache_request_headers();
 
+
+
 // Check if user is attempting to login
 if (isset($_GET['login'], $_POST['email'], $_POST['password'])) {
     $user->email = $_POST['email'];
@@ -139,7 +141,7 @@ if (isset($_GET['all'])) {
     }
 
     // Check if user has authorization
-    if (!$access > 1 || $user->id != $id) {
+    if (!($access > 1 || $user->id != $id)) {
         $json_result["code"] = 401;
         $json_result["message"] = "Unauthorized.";
         echo json_encode($json_result);
@@ -165,6 +167,7 @@ if (isset($_GET['all'])) {
         'phone' => $user->phone,
         'address' => $user->address,
         'credit_limit' => $user->credit_limit,
+        'img_link' => $user->img_link,
         'balance' => $user->balance,
         'created' => $user->created,
     );

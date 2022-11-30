@@ -3,8 +3,11 @@
 include '../utils/token.php';
 include '../utils/string.php';
 
-$token =  "";
-$message = "Indicate IO in test.php file";
+$token =  null;
+
+$i = 5;
+$message = $token ?? "Not found" . $i;
+
 
 echo json_encode(array("message" => $message));
 // echo Token::getHeader($token);

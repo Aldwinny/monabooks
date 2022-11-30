@@ -51,9 +51,50 @@ $access = intval($payload["access_level"]);
 // Get raw posted data
 $data = json_decode(file_get_contents("php://input"));
 
+// ID must be specified as GET request if an admin
+// is attempting to change another person's personal information
+if (isset($_GET['id']) && $_GET['id'] != $id) {
+    // If user attempting to change another user's account is
+    // not an admin, return 401
+    if ($access > 0) {
+        $json_result["code"] = 401;
+        $json_result["message"] = "Unauthorized.";
+        echo json_encode($json_result);
+        die();
+    }
+    $user->id = $_GET['id'];
+
+    // Obtain user information
+    $user->read_single();
+
+    // SET all credentials & prepare for modification
+    $user->firstname = $data->firstname ?? $user->firstname;
+    $user->lastname = $data->lastname ?? $user->lastname;
+    $user->email = $data->email ?? $user->email;
+    $user->phone = $data->phone ?? $user->phone;
+    $user->address = $data->address ?? $user->address;
+    $user->access_level = intval($data->access_level ?? $user->access_level);
+    $user->credit_limit = intval($data->credit_limit ?? $user->credit_limit);
+    $user->img_link = $data->img_link ?? $user->img_link;
+    $user->balance = floatval($data->balance ?? $user->balance);
+
+    if ($user->update()) {
+        $json_result["code"] = 200;
+        $json_result["message"] = "Data change request successful!";
+        echo json_encode($json_result);
+        die();
+    } else {
+        $json_result["code"] = 500;
+        $json_result["message"] = "An error has occurred!";
+        echo json_encode($json_result);
+        die();
+    }
+}
+
+
 if (!isset($data->password)) {
     $json_result["code"] = 401;
-    $json_result["message"] = "Missing credentials! Password not found.";
+    $json_result["message"] = "Missing or Incomplete credentials! Password not found.";
     echo json_encode($json_result);
     die();
 } else {
@@ -74,19 +115,17 @@ if (!isset($data->password)) {
 // If an access_level change was attempted, only admins (access_level = 0) must have the power to do so.
 if (isset($data->access_level) && $access < 1) {
     $user->access_level = intval($data->access_level);
-} else {
-    $user->access_level = $access;
 }
 
 // SET all credentials & prepare for modification
-$user->firstname = $data->firstname;
-$user->lastname = $data->lastname;
-$user->email = $data->email;
-$user->phone = $data->phone;
-$user->address = $data->address;
-$user->credit_limit = intval($data->credit_limit);
-$user->balance = floatval($data->balance);
-$user->password = $data->password;
+$user->firstname = $data->firstname ?? $user->firstname;
+$user->lastname = $data->lastname ?? $user->lastname;
+$user->email = $data->email ?? $user->email;
+$user->phone = $data->phone ?? $user->phone;
+$user->address = $data->address ?? $user->address;
+$user->credit_limit = intval($data->credit_limit ?? $user->credit_limit);
+$user->img_link = $data->img_link ?? $user->img_link;
+$user->balance = floatval($data->balance ?? $user->balance);
 
 if ($user->update()) {
     $json_result["code"] = 200;

@@ -8,6 +8,7 @@ header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,
 include_once '../../config/Database.php';
 include_once '../../models/Products.php';
 include_once '../../models/Books.php';
+include_once '../../utils/token.php';
 
 // Instantiate DB & Connect
 $database = new Database();
@@ -58,11 +59,18 @@ if ($access > 1) {
 // Get raw posted data
 $data = json_decode(file_get_contents("php://input"));
 
+if (!isset($data->name, $data->description, $data->price, $data->supply, $data->categories)) {
+    $json_result["code"] = 400;
+    $json_result["message"] = "Bad Request: Incomplete data input.";
+    echo json_encode($json_result);
+    die();
+}
+
 $product->name = $data->name;
 $product->description = $data->description;
 $product->price = $data->price;
 $product->supply = $data->supply;
-$product->img_link = $data->img_link;
+$product->img_link = $data->img_link ?? null;
 
 // Must be a set of words divided by comma
 $product->categories = explode(',', $data->categories);
@@ -72,29 +80,72 @@ if (isset($data->book)) {
     // Instantiate a book
     $book = new Books($db);
 
-    $book->title = $data->title;
-    $book->publisher = $data->publisher;
-    $book->book_type = $data->book_type;
-    $book->cover_type = $data->cover_type;
-    $book->ed = $data->ed;
+    // Check if an id exists. Resolve the book and create a product
+    if (isset($data->book->id)) {
+        $book->id = $data->book->id;
 
-    $book->authors = explode(',', $data->authors);
-    $book->genres = explode(',', $data->genres);
+        $book->read_single();
+
+        // If book is not found
+        if (!isset($book->name)) {
+            $json_result["code"] = 404;
+            $json_result["message"] = "Not found: Book requested for product conversion not found.";
+            echo json_encode($json_result);
+            die();
+        }
+
+        // If book is found, resolve all data to product
+        // TO BE IMPLEMENTED
+        $json_result["code"] = 501;
+        $json_result["message"] = "Will be Implemented soon";
+        echo json_encode($json_result);
+        die();
+    }
+
+    // Check if an book data exists
+    if (!isset($data->book->title, $data->book->publisher, $data->book->book_type, $data->book->cover_type, $data->book->authors, $data->book->genres)) {
+        $json_result["code"] = 400;
+        $json_result["message"] = "Bad Request: Incomplete data input.";
+        echo json_encode($json_result);
+        die();
+    }
+
+    $book->title = $data->book->title;
+    $book->publisher = $data->book->publisher;
+    $book->book_type = $data->book->book_type;
+    $book->cover_type = $data->book->cover_type;
+    $book->ed = $data->book->ed ?? 1;
+
+    $book->authors = explode(',', $data->book->authors);
+    $book->genres = explode(',', $data->book->genres);
 
     // Assign book instance to product book variable.
     $product->book = $book;
 
     // Create product
     if ($product->create()) {
-        echo json_encode(array("message" => "product Created"));
+        $json_result["code"] = 200;
+        $json_result["message"] = "Book created successfully.";
+        echo json_encode($json_result);
+        die();
     } else {
         echo json_encode(array("message" => "product not created"));
+        $json_result["code"] = 500;
+        $json_result["message"] = "Internal Server Error: Book Product not created";
+        echo json_encode($json_result);
+        die();
     }
 } else {
     // Create product
     if ($product->create()) {
-        echo json_encode(array("message" => "product Created"));
+        $json_result["code"] = 200;
+        $json_result["message"] = "Product created successfully.";
+        echo json_encode($json_result);
+        die();
     } else {
-        echo json_encode(array("message" => "product not created"));
+        $json_result["code"] = 500;
+        $json_result["message"] = "Internal Server Error: Product not created";
+        echo json_encode($json_result);
+        die();
     }
 }

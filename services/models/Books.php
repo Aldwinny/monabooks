@@ -1,6 +1,6 @@
 <?php
 
-include_once '../utils/string.php';
+include_once '../../utils/string.php';
 
 class Books
 {
@@ -182,9 +182,9 @@ class Books
 
         // Clean data
         $this->title = Str::sanitizeString($this->title);
-        $this->publisher = Str::sanitizeString($this->publisher);
-        $this->book_type = Str::sanitizeString($this->book_type);
-        $this->cover_type = Str::sanitizeString($this->cover_type);
+        $this->publisher = Str::toUpperCamelCase(Str::sanitizeString($this->publisher));
+        $this->book_type = Str::toUpperCamelCase(Str::sanitizeString($this->book_type));
+        $this->cover_type =  strtolower(Str::sanitizeString($this->cover_type));
         $this->ed = Str::sanitizeInt($this->ed);
 
         // Bind data
@@ -195,7 +195,7 @@ class Books
         $stmt->bindParam(':ed', $this->ed);
 
         if ($stmt->execute()) {
-            $q = 'SELECT * FROM ' . $this->table . 'WHERE title = :title AND publisher = :publisher AND ed = :ed';
+            $q = 'SELECT * FROM ' . $this->table . ' WHERE title = :title AND publisher = :publisher AND ed = :ed';
 
             // Prepare statement
             $stmt2 = $this->conn->prepare($q);
@@ -246,12 +246,12 @@ class Books
 
         // Bind parameters
         for ($i = 0; $i < count($this->authors); $i++) {
-            $stmt->bindParam(':name' . strval($i), Str::toUpperCamelCase($this->authors[$i]));
+            $stmt->bindValue(':name' . strval($i), Str::toUpperCamelCase($this->authors[$i]));
         }
 
         // Execute query and turn authors variable to array of IDs
         if ($stmt->execute()) {
-            $q = 'SELECT * FROM ' . $this->authors_table . 'WHERE name IN (?)';
+            $q = 'SELECT * FROM ' . $this->authors_table . ' WHERE name IN (?)';
 
             $replacer = "";
             // Prepare the query
@@ -282,7 +282,7 @@ class Books
                 // For every author value, push its id to authors
                 while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
                     array_push($this->authors, $row['author_id']);
-                };
+                }
             } else {
                 return false;
             }
@@ -321,12 +321,12 @@ class Books
 
         // Bind parameters
         for ($i = 0; $i < count($this->genres); $i++) {
-            $stmt->bindParam(':name' . strval($i), Str::toUpperCamelCase($this->genres[$i]));
+            $stmt->bindValue(':name' . strval($i), Str::toUpperCamelCase($this->genres[$i]));
         }
 
         // Execute query
         if ($stmt->execute()) {
-            $q = 'SELECT * FROM ' . $this->genres_table . 'WHERE name IN (?)';
+            $q = 'SELECT * FROM ' . $this->genres_table . ' WHERE name IN (?)';
 
             $replacer = "";
             // Prepare the query
@@ -447,7 +447,7 @@ class Books
             $al_assocs_query = 'INSERT INTO ' . $this->authors_list_table . ' (`book_id`, `author_id`) VALUES ';
 
             for ($i = 0; $i < count($al_assocs); $i++) {
-                $al_assocs_query . '(:book_id' . $i . ', :author_id' . $i . '), ';
+                $al_assocs_query = $al_assocs_query . '(:book_id' . $i . ', :author_id' . $i . '), ';
             }
 
             // Finalize query
@@ -467,10 +467,10 @@ class Books
 
         // If there are items that can be associated in al_assocs array
         if (!(count($gl_assocs) == 0)) {
-            $gl_assocs_query = 'INSERT INTO ' . $this->genres_list_table . ' (`book_id`, `author_id`) VALUES ';
+            $gl_assocs_query = 'INSERT INTO ' . $this->genres_list_table . ' (`book_id`, `genre_id`) VALUES ';
 
             for ($i = 0; $i < count($gl_assocs); $i++) {
-                $gl_assocs_query . '(:book_id' . $i . ', :genre_id' . $i . '), ';
+                $gl_assocs_query = $gl_assocs_query . '(:book_id' . $i . ', :genre_id' . $i . '), ';
             }
 
             // Finalize query
