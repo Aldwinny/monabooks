@@ -323,4 +323,35 @@ class Product
             return true;
         }
     }
+
+    public function update()
+    {
+        $query = 'UPDATE ' . $this->table . ' SET 
+        name = :name,
+        description = :description,
+        price = :price,
+        supply = :supply,
+        img_link = :img_link WHERE product_id = :id';
+
+        // Prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // Clean data
+        $this->name = Str::sanitizeString($this->name);
+        $this->description = Str::sanitizeString($this->description);
+        $this->price = Str::sanitizeDouble($this->price);
+        $this->supply = Str::sanitizeInt($this->supply);
+        $this->img_link = Str::sanitizeString($this->img_link);
+
+        // Bind parameters
+        $stmt->bindParam(":name", $this->name);
+        $stmt->bindParam(":description", $this->description);
+        $stmt->bindParam(":price", $this->price);
+        $stmt->bindParam(":supply", $this->supply);
+        $stmt->bindParam(":img_link", $this->img_link);
+        $stmt->bindParam(":id", $this->id);
+
+        // Execute
+        return $stmt->execute();
+    }
 }

@@ -210,6 +210,10 @@ class Book
             $stmt2->execute();
             $row = $stmt2->fetch(PDO::FETCH_ASSOC);
 
+            if ($stmt2->rowCount() == 0) {
+                return false;
+            }
+
             // Set ID property
             $this->id = intval($row['book_id']);
 
@@ -439,7 +443,7 @@ class Book
                 }
 
                 // Leave only those that will be associated
-                $gl_assocs = array_diff($this->genres, $al_comparator);
+                $gl_assocs = array_diff($this->genres, $gl_comparator);
             }
         }
 
@@ -489,5 +493,81 @@ class Book
             $gl_assocs_stmt->execute();
         }
         return true;
+    }
+
+    /**
+     * Convenience function for associations and genres
+     */
+    public function delete_all_associations()
+    {
+        $this->delete_authors_associations();
+        $this->delete_genres_associations();
+    }
+
+    /**
+     * This function deletes all book associations with genres.
+     */
+    public function delete_genres_associations()
+    {
+        // Delete book associations with genres
+        $query = "DELETE FROM " . $this->genres_list_table . " WHERE book_id = ?";
+
+        // Prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // Bind parameters
+        $stmt->bindParam(1, $this->id);
+
+        // Execute query and return True or False;
+        return $stmt->execute();
+    }
+
+    /**
+     * This function deletes all book associations with authors.
+     */
+    public function delete_authors_associations()
+    {
+        // Delete book associations with genres
+        $query = "DELETE FROM " . $this->authors_list_table . " WHERE book_id = ?";
+
+        // Prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // Bind parameters
+        $stmt->bindParam(1, $this->id);
+
+        // Execute query and return True or False;
+        return $stmt->execute();
+    }
+
+    public function update()
+    {
+        $query = 'UPDATE ' . $this->table . ' SET 
+        title = :title,
+        publisher = :publisher,
+        book_type = :book_type,
+        cover_type = :cover_type,
+        ed = :ed WHERE book_id = :id';
+
+        // Prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // Clean the data
+        $this->title = Str::sanitizeString($this->title);
+        $this->publisher = Str::toUpperCamelCase(Str::sanitizeString($this->publisher));
+        $this->book_type = Str::toUpperCamelCase(Str::sanitizeString($this->book_type));
+        $this->cover_type = Str::sanitizeString($this->cover_type);
+        $this->ed = Str::sanitizeInt($this->ed);
+
+        // Bind parameters
+        $stmt->bindParam(":title", $this->title);
+        $stmt->bindParam(":publisher", $this->publisher);
+        $stmt->bindParam(":book_type", $this->book_type);
+        $stmt->bindParam(":cover_type", $this->cover_type);
+        $stmt->bindParam(":ed", $this->ed);
+        $stmt->bindParam(":id", $this->id);
+
+        // Execute
+        return $stmt->execute();
     }
 }

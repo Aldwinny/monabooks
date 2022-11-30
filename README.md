@@ -81,3 +81,53 @@ The assets will be divided into two parts: (1) Resources and (2) Server Uploads.
 
 1. Do all employee work
 2. CRUD Employees
+
+### API End points (For CREATE Requests)
+
+#### users/create.php
+
+1. Access Level: All
+2. Parameters: JSON file
+
+#### products/create.php
+
+1. Access Level: 0, 1
+2. Parameters: JSON file
+
+#### books/create.php
+
+1. Access Level: 0, 1
+2. Parameters: JSON file
+
+### API End points (For READ Requests)
+
+#### users/handler.php
+
+1. Access Level: 0 (for getting user info), 1 (for login and getting own user info), 2 (for login and getting own user info)
+2. Parameters: GET, POST
+
+#### products/handler.php
+
+1. Access Level: 0, 1
+2. Parameters: JSON file
+
+#### books/handler.php
+
+1. Access Level: 0, 1
+2. Parameters: JSON file
+
+### API End points (For UPDATE Requests)
+
+#### users/modify.php
+
+#### products/modify.php
+
+#### books/modify.php
+
+### API End points (For DELETE Requests)
+
+#### users/modify.php
+
+#### products/modify.php
+
+#### books/modify.php

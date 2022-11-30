@@ -6,7 +6,7 @@ include '../utils/string.php';
 $token =  null;
 
 $i = 5;
-$message = $token ?? "Not found" . $i;
+$message = Str::sanitizeString("Simon & Schuster");
 
 
 echo json_encode(array("message" => $message));
