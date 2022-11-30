@@ -354,4 +354,18 @@ class Product
         // Execute
         return $stmt->execute();
     }
+
+    public function delete()
+    {
+        $query = 'DELETE FROM ' . $this->table . ' WHERE product_id = ?';
+
+        // Prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // Bind parameters
+        $stmt->bindParam(1, $this->id);
+
+        // Execute query and return True or False;
+        return $stmt->execute();
+    }
 }

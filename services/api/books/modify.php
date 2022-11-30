@@ -71,6 +71,30 @@ if (isset($_GET['id'])) {
         die();
     }
 
+    // Check if request was to delete
+    if (isset($_GET['delete'])) {
+        // Wrap in try catch and catch all constraint error
+        try {
+            $book->delete();
+        } catch (PDOException $e) {
+            if (intval($e->getCode()) == 23000) {
+                $json_result["code"] = 400;
+                $json_result["message"] = "Bad Request: A foreign key constraint is preventing the deletion of selected item. Delete the product connected to this book before proceeding.";
+                echo json_encode($json_result);
+                die();
+            } else {
+                $json_result["code"] = 500;
+                $json_result["message"] = "Internal Server Error: An error has occurred while processing delete query.";
+                echo json_encode($json_result);
+                die();
+            }
+        }
+        $json_result["code"] = 200;
+        $json_result["message"] = "Success: Book successfully deleted.";
+        echo json_encode($json_result);
+        die();
+    }
+
     // Set all values
     $book->title = $data->title ?? $book->title;
     $book->publisher = $data->publisher ?? $book->publisher;

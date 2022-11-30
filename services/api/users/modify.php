@@ -67,6 +67,14 @@ if (isset($_GET['id']) && $_GET['id'] != $id) {
     // Obtain user information
     $user->read_single();
 
+    if (isset($_GET['delete'])) {
+        $user->delete();
+        $json_result["code"] = 200;
+        $json_result["message"] = "Success: User successfully deleted.";
+        echo json_encode($json_result);
+        die();
+    }
+
     // SET all credentials & prepare for modification
     $user->firstname = $data->firstname ?? $user->firstname;
     $user->lastname = $data->lastname ?? $user->lastname;
@@ -80,12 +88,12 @@ if (isset($_GET['id']) && $_GET['id'] != $id) {
 
     if ($user->update()) {
         $json_result["code"] = 200;
-        $json_result["message"] = "Data change request successful!";
+        $json_result["message"] = "Success: Data change request successful!";
         echo json_encode($json_result);
         die();
     } else {
         $json_result["code"] = 500;
-        $json_result["message"] = "An error has occurred!";
+        $json_result["message"] = "Internal Server Error: An unknown error has occurred!";
         echo json_encode($json_result);
         die();
     }
@@ -94,7 +102,7 @@ if (isset($_GET['id']) && $_GET['id'] != $id) {
 
 if (!isset($data->password)) {
     $json_result["code"] = 401;
-    $json_result["message"] = "Missing or Incomplete credentials! Password not found.";
+    $json_result["message"] = "Unauthorized: Missing or Incomplete credentials! Password not found.";
     echo json_encode($json_result);
     die();
 } else {
@@ -106,7 +114,7 @@ if (!isset($data->password)) {
     // Validate user password
     if (!password_verify($data->password, $user->password)) {
         $json_result["code"] = 401;
-        $json_result["message"] = "Wrong credentials! Password incorrect!";
+        $json_result["message"] = "Unauthorized: Password is incorrect!";
         echo json_encode($json_result);
         die();
     }
@@ -117,6 +125,13 @@ if (isset($data->access_level) && $access < 1) {
     $user->access_level = intval($data->access_level);
 }
 
+if (isset($_GET['delete'])) {
+    $user->delete();
+    $json_result["code"] = 200;
+    $json_result["message"] = "Success: User successfully deleted.";
+    echo json_encode($json_result);
+    die();
+}
 // SET all credentials & prepare for modification
 $user->firstname = $data->firstname ?? $user->firstname;
 $user->lastname = $data->lastname ?? $user->lastname;

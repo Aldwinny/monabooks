@@ -71,6 +71,16 @@ if (isset($_GET['id'])) {
         die();
     }
 
+    // Check if request was to delete
+    if (isset($_GET['delete'])) {
+        // Wrap in try catch and catch all constraint error
+        $product->delete();
+        $json_result["code"] = 200;
+        $json_result["message"] = "Success: Product successfully deleted.";
+        echo json_encode($json_result);
+        die();
+    }
+
     // Set all values
     $product->name = $data->name ?? $product->name;
     $product->description = $data->description ?? $product->description;
