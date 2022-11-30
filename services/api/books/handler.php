@@ -9,7 +9,7 @@ header('Access-Control-Allow-Methods: GET,POST');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 include_once '../../config/Database.php';
-include_once '../../models/Books.php';
+include_once '../../models/Book.php';
 include_once '../../utils/token.php';
 
 // Instantiate DB & Connect
@@ -17,7 +17,7 @@ $database = new Database();
 $db = $database->connect();
 
 // Instantiate book object
-$book = new Books($db);
+$book = new Book($db);
 
 // Create JSON Result variable
 $json_result = array();

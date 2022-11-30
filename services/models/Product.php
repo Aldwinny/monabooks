@@ -1,5 +1,7 @@
 <?php
-class Products
+
+include_once "../../models/Book.php";
+class Product
 {
     private $conn;
 
@@ -30,7 +32,7 @@ class Products
     // Get all products
     public function read()
     {
-        $query = 'SELECT p.*, GROUP_CONCAT(DISTINCT cat.category_name) category_name FROM ' . $this->table . ' p JOIN ' . $this->attr_table . ' attr ON p.product_id = attr.product_id JOIN ' . $this->category_table . ' cat ON attr.category_id = cat.category_id GROUP BY p.product_id';
+        $query = 'SELECT p.*, GROUP_CONCAT(DISTINCT cat.category_name) category_name, attr.book_id book_id FROM ' . $this->table . ' p JOIN ' . $this->attr_table . ' attr ON p.product_id = attr.product_id JOIN ' . $this->category_table . ' cat ON attr.category_id = cat.category_id GROUP BY p.product_id';
 
 
         // Prepare statement
@@ -44,7 +46,7 @@ class Products
 
     public function read_single()
     {
-        $query = 'SELECT p.*, GROUP_CONCAT(DISTINCT cat.category_name) category_name FROM ' . $this->table . ' p JOIN ' . $this->attr_table . ' attr ON p.product_id = attr.product_id JOIN ' . $this->category_table . ' cat ON attr.category_id = cat.category_id WHERE p.product_id = ? GROUP BY p.product_id';
+        $query = 'SELECT p.*, GROUP_CONCAT(DISTINCT cat.category_name) category_name, attr.book_id book_id FROM ' . $this->table . ' p JOIN ' . $this->attr_table . ' attr ON p.product_id = attr.product_id JOIN ' . $this->category_table . ' cat ON attr.category_id = cat.category_id WHERE p.product_id = ? GROUP BY p.product_id';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -71,6 +73,13 @@ class Products
 
         // Set non-inherent properties
         $this->categories = $row['category_name'];
+
+        if (isset($row['book_id'])) {
+            $this->book = new Book($this->conn);
+
+            $this->book->id = $row['book_id'];
+            $this->book->read_single();
+        }
     }
 
     public function read_categories()
@@ -88,7 +97,7 @@ class Products
 
     public function create()
     {
-        $query = 'INSERT INTO ' . $this->table . ' 
+        $query = 'INSERT IGNORE INTO ' . $this->table . ' 
         SET
          name = :name,
          description = :description,

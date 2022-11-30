@@ -2,7 +2,7 @@
 
 include_once '../../utils/string.php';
 
-class Books
+class Book
 {
     private $conn;
 
@@ -96,7 +96,7 @@ class Books
 
     public function read_single()
     {
-        $query = 'SELECT books.*, GROUP_CONCAT(DISTINCT author.name) authors, GROUP_CONCAT(DISTINCT genre.name) genres FROM ' . $this->table . '
+        $query = 'SELECT books.*, GROUP_CONCAT(DISTINCT author.name) `authors`, GROUP_CONCAT(DISTINCT genre.name) `genres` FROM ' . $this->table . '
                  books JOIN ' . $this->authors_list_table . ' auth ON books.book_id = auth.book_id JOIN ' .
             $this->authors_table . ' author ON auth.author_id = author.author_id JOIN ' . $this->genres_list_table .
             ' gen ON books.book_id = gen.book_id JOIN ' . $this->genres_table . ' genre ON gen.genre_id = genre.genre_id WHERE books.book_id = :bid GROUP BY books.book_id LIMIT 0,1';
@@ -111,6 +111,7 @@ class Books
         $stmt->execute();
 
         if ($stmt->rowCount() == 0) {
+
             return;
         }
 
@@ -169,7 +170,7 @@ class Books
 
     public function create()
     {
-        $query = 'INSERT INTO ' . $this->table . '
+        $query = 'INSERT IGNORE INTO ' . $this->table . '
         SET
          title = :title,
          publisher = :publisher,

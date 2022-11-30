@@ -9,7 +9,7 @@ header('Access-Control-Allow-Methods: GET,POST');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 include_once '../../config/Database.php';
-include_once '../../models/Products.php';
+include_once '../../models/Product.php';
 include_once '../../utils/token.php';
 
 // Instantiate DB & Connect
@@ -17,7 +17,7 @@ $database = new Database();
 $db = $database->connect();
 
 // Instantiate product object
-$product = new Products($db);
+$product = new Product($db);
 
 // Create JSON Result variable
 $json_result = array();
@@ -112,6 +112,18 @@ if (isset($_GET['all'])) {
         'img_link' => $product->img_link,
         'categories' => $product->categories,
     );
+
+    if (isset($product->book->title)) {
+        $json_result['book'] = array(
+            'title' => $product->book->title,
+            'publisher' => $product->book->publisher,
+            'book_type' => $product->book->book_type,
+            'cover_type' => $product->book->cover_type,
+            'ed' => $product->book->ed,
+            'authors' => $product->book->authors,
+            'genres' => $product->book->genres,
+        );
+    }
 
     echo json_encode($json_result);
 }
