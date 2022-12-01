@@ -1,13 +1,165 @@
+<!-- <?php
+session_start();
+include "general.html";
+include "assets\scripts\php\connection.html";
+
+$bestsellers_type = ["air_conditioners", "air_conditioners", "washing_machines", "kitchen_appliances"];
+$bestsellers_id = [1, 4, 1, 1];
+
+?> -->
+
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="script.js"></script>
-    <title>Products Page</title>
-  </head>
-  <body>
-    <main></main>
-  </body>
+<html>
+
+<head>
+    
+    <!-- <?php head_scripts("SPARKS Industries", true); ?> -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <link rel="icon" href="assets/media/images/logo/logo-tall.png" />
+    <title>Mona Books | Home</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="assets/stylesheets/general.css">
+    <link rel="stylesheet" href="assets/stylesheets/variables.css">
+    <link rel="stylesheet" href="assets/stylesheets/pages/home.css">
+    
+</head>
+<body>
+    
+    <!-- <?php navigation(); ?> -->
+    <script src="assets\scripts\js\importer.js"></script>
+    <script>
+       HTMLImporter.import("template/navigation.html");
+     </script>
+    
+    <!-- header -->
+    <div id="featured-items" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#featured-items" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#featured-items" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#featured-items" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="slide-bg" src="assets\media\images\svg-bg\blob-scene-haikei.svg">
+                <div class="container-fluid d-flex align-items-center justify-content-center item-featured item-featured-y">
+                    <div class="item-featured-content d-flex align-items-center justify-content-center">
+                        <div class="item-featured-y-desc">
+                            <h1>The Count of Monte Cristo</h1>  
+                            <p><b>Novel by Alexandre Dumas</b></p>
+                            <p>This piece tells the tale of a man who seeks revenge after his escape from <br>
+                                prision and deals with the central themes of vengeance, justice, forgiveness, and mercy.</p>
+                            <a href="indiv-product.html">
+                                <button type="button" class="btn shop-now">Shop Now</button>
+                            </a>
+                        </div>
+                        <img src="services/u/product/countofmontecristo.png" class="tall-img with-shadow">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img class="slide-bg" src="assets\media\images\svg-bg\blue-layered-peaks.svg">
+                <div class="container-fluid d-flex align-items-center justify-content-center item-featured item-featured-y">
+                    <div class="item-featured-content d-flex align-items-center justify-content-center">
+                        <div class="item-featured-y-desc">
+                            <h1>Pride and Prejudice</h1>
+                            <p><b>Novel by Jane Austen</b></p>
+                            <p>Pride and Prejudice follows the turbulent relationship between Elizabeth Bennet, 
+                                <br>the daughter of a country gentleman, and Fitzwilliam Darcy, a rich aristocratic landowner. 
+                                <br>They must overcome the titular sins of pride and prejudice in order to fall in love and marry.</p>
+                            <a href="indiv-product.html">
+                                <button type="button" class="btn shop-now">Shop Now</button>
+                            </a>
+                        </div>
+                        <img src="services/u/product/prideandprejudice.png" class="tall-img with-shadow">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img class="slide-bg" src="assets\media\images\svg-bg\circle-scatter-haikei.svg">
+                <div class="container-fluid d-flex align-items-center justify-content-center item-featured item-featured-y">
+                    <div class="item-featured-content d-flex align-items-center justify-content-center">
+                        <div class="item-featured-y-desc">
+                            <h1>Letters to Young Poet</h1>
+                            <p><b>Book by Rainer Maria Rilke</b></p>
+                            <p>The letters were originally written to Franz Xaver Kappus, who was 19 and at a military 
+                                <br>university when he first wrote to the poet asking whether his poems were any good. 
+                                <br>The letters are full of succinct advice on being honest with oneself and garnering 
+                                <br>the courage to follow one's creative career.</p>
+                            <a href="indiv-product.html">
+                                <button type="button" class="btn shop-now">Shop Now</button>
+                            </a>
+                        </div>
+                        <img src="services/u/product/letterstoayoungpoet.jpg" class="tall-img with-shadow">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#featured-items" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#featured-items" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    
+    <!-- bestsellers -->
+    <div class="section bestsellers container-fluid d-flex flex-column align-items-center">
+        <h1 class="heading-accent">Our Bestsellers</h1>
+        <div class="container-fluid d-flex justify-content-center">
+            <!-- <?php
+                for($i = 0; $i < count($bestsellers_type); $i++) {
+                    $result = mysqli_query($connection, "SELECT * FROM $bestsellers_type[$i] WHERE id=$bestsellers_id[$i]");
+                    while($row = mysqli_fetch_array($result)) {
+                        ?> -->
+                        <div class="card product">
+                            <div class="card-body">
+                                <img class="img-fluid" src="#">
+                                <h5 class="card-title"></h5>
+                                <p class="card-text"></p>
+                                <a href="indiv-product.html" title="Learn More...">
+                                    <div class="product-overlay">
+                                        <button class="btn"><ion-icon name="add-outline"></ion-icon></button>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- <?php
+                    }
+                }
+            ?> -->
+        </div>
+        <a class="more" href="products.html">
+            <button class="btn btn-primary main-button">See More Products</button>
+        </a>
+    </div>
+    
+    <!-- scripts -->
+    <!-- <?php
+
+        // footer
+        footer();
+
+        // general scripts
+        body_scripts();
+    
+    ?> -->
+
+    <script src="assets\scripts\js\importer.js"></script>
+    <script>
+       HTMLImporter.import("template/footer.html");
+     </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="assets\scripts\js\general.js"></script>
+    <script src="assets\scripts\js\home.js"></script>   
+</body>
 </html>
