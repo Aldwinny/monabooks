@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 session_start();
 include "general.php";
@@ -35,39 +35,54 @@ if($type == "fiction") {
     $category = "Children Books";
 }
 
-?>
+?> -->
 
 <!DOCTYPE html>
 <html>
 
 <head>
 
-    <?php head_scripts($name, false); ?>
-    <link rel="stylesheet" href="assets/stylesheets/pages/indiv-product.css?v=<?php echo time(); ?>">
+    <!-- <?php head_scripts($name, false); ?> -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <link rel="icon" href="/assets/media/images/logo/logo-tall.png" />
+    <title>Mona Books | Product</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="/assets/stylesheets/general.css">
+    <link rel="stylesheet" href="/assets/stylesheets/variables.css">
+    <link rel="stylesheet" href="/assets/stylesheets/pages/indiv-product.css">
     
 </head>
 <body>
     
-    <?php navigation(); ?>
+    <!-- <?php navigation(); ?> -->
+    <script src="\assets\scripts\js\importer.js"></script>
+    <script>
+       HTMLImporter.import("/template/navigation.html");
+     </script>
 
     <div class="section container-fluid">
         <div class="links d-flex align-items-center">
-            <a href="index.php">Home</a>
+            <a href="index.html">Home</a>
             <ion-icon name="chevron-forward-outline"></ion-icon>
-            <a href="products.php?type=all">All Products</a>
+            <a href="/products.html">All Products</a>
             <ion-icon name="chevron-forward-outline"></ion-icon>
-            <a href="products.php?type=<?php echo $type; ?>"><?php echo $category; ?></a>
+            <a href="/products.html"></a>
             <ion-icon name="chevron-forward-outline"></ion-icon>
         </div>
         <div class="d-flex content">
             <div class="img-wrapper">
-                <img src="<?php echo $image; ?>" class="product-img img-fluid">
+                <img src="" class="product-img img-fluid">
             </div>
             <div class="info">
                 <form method="POST" enctype="multipart/form-data">
-                    <h1 class="name"><?php echo $name; ?></h1>
-                    <div class="price">₱<?php echo $price; ?></div>
-                    <div class="desc"><?php echo $desc; ?></div>
+                    <h1 class="name"></h1>
+                    <div class="price">₱</div>
+                    <div class="desc"></div>
                     <div class="quantity d-flex align-items-center">
                         <p>Quantity:</p>
                         <input type="number" id="qty" name="qty" class="form-control" value="1" min="1" max="20">
@@ -78,7 +93,7 @@ if($type == "fiction") {
         </div>
     </div>
     
-    <?php
+    <!-- <?php
 
         // footer
         footer();
@@ -101,7 +116,18 @@ if($type == "fiction") {
             </script><?php
         }
     
-    ?>
+    ?> -->
+
+    <script src="\assets\scripts\js\importer.js"></script>
+    <script>
+       HTMLImporter.import("/template/footer.html");
+     </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="\assets\scripts\js\general.js"></script> 
+    <script src="/assets/scripts/js/login.js"></script>
 
 </body>
 </html>

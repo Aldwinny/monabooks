@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 session_start();
 include "general.php";
@@ -26,76 +26,93 @@ while($row = mysqli_fetch_array($result)) {
 }
 
 
-?>
+?> -->
 
 <!DOCTYPE html>
 <html>
 
 <head>
 
-    <?php head_scripts("My Profile", false); ?>
-    <link rel="stylesheet" href="assets/stylesheets/pages/profile.css?v=<?php echo time(); ?>">
+    <!-- <?php head_scripts("My Profile", false); ?> -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <link rel="icon" href="/assets/media/images/logo/logo-tall.png" />
+    <title>Mona Books | My Profile</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="/assets/stylesheets/general.css">
+    <link rel="stylesheet" href="/assets/stylesheets/variables.css">
+    <link rel="stylesheet" href="/assets/stylesheets/pages/login.css">
+    <link rel="stylesheet" href="/assets/stylesheets/pages/profile.css">
     
 </head>
 <body>
     
-    <?php navigation(); ?>
+    <!-- <?php navigation(); ?> -->
+
+    <script src="\assets\scripts\js\importer.js"></script>
+    <script>
+       HTMLImporter.import("/template/navigation.html");
+     </script>
 
     <div class="container section d-flex align-items-top">
         <div class="img-wrapper">
-            <?php
+            <!-- <?php
             if($image == "") {
                 $u_img = "https://via.placeholder.com/300";
             } else {
                 $u_img = $image;
             }
-            ?>
-            <img src="<?php echo $u_img; ?>" class="profile-pic img-fluid">
+            ?> -->
+            <img src="" class="profile-pic img-fluid">
         </div>
         <div class="info">
-            <h1><?php echo $firstname." ".$lastname; ?></h1>
+            <h1></h1>
             <div class="balance d-flex align-items-center">
-                Balance: <span class="bal">₱<?php echo $balance; ?></span>
+                Balance: <span class="bal">₱</span>
             </div>
             <div class="personal-info">
                 <div class="info-content">
                     <div class="title">Email</div>
-                    <div class="value"><?php echo $email; ?></div>
+                    <div class="value"></div>
                 </div>
                 <div class="info-content">
                     <div class="title">Password</div>
                     <div class="value">
-                        <?php
+                        <!-- <?php
                             for($i = 0; $i < strlen($pass); $i++) {
                                 echo "&#8226;";
                             }
-                        ?>
+                        ?> -->
                     </div>
                 </div>
                 <div class="info-content">
                     <div class="title">Contact No.</div>
-                    <div class="value"><?php echo $number; ?></div>
+                    <div class="value"></div>
                 </div>
                 <div class="info-content">
                     <div class="title">Delivery Address</div>
                     <div class="value">
-                        <?php
+                        <!-- <?php
                             if($address == "") {
                                 echo "<i>To be added...</i>";
                             } else {
                                 echo $address;
                             }
-                        ?>
+                        ?> -->
                     </div>
                 </div>
             </div>
         </div>
-        <a href="edit-profile.php?id=<?php echo $id; ?>" class="edit">
+        <a href="edit-profile.html" class="edit">
             <button class="btn edit-button d-flex align-items-center"><ion-icon name="settings-outline"></ion-icon></button>
         </a>
     </div>
 
-    <?php
+    <!-- <?php
 
         // footer
         footer();
@@ -103,7 +120,18 @@ while($row = mysqli_fetch_array($result)) {
         // general scripts
         body_scripts();
     
-    ?>
+    ?> -->
+
+    <script src="\assets\scripts\js\importer.js"></script>
+    <script>
+       HTMLImporter.import("/template/footer.html");
+     </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="\assets\scripts\js\general.js"></script> 
+    <script src="/assets/scripts/js/login.js"></script>
 
 </body>
 </html>

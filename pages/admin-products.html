@@ -1,21 +1,32 @@
-<?php
+<!-- <?php
 include "general.php";
 include "assets/scripts/php/connection.php";
-?>
+?> -->
 
 <!DOCTYPE html>
 <html>
 
 <head>
 
-    <?php head_scripts("Edit/Delete Product - Admin", false); ?>
-    <link rel="stylesheet" href="assets\stylesheets\admin\general.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="assets\stylesheets\admin\products.css?v=<?php echo time(); ?>">
+    <!-- <?php head_scripts("Edit/Delete Product - Admin", false); ?> -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <link rel="icon" href="assets/media/images/logo/logo-tall.png" />
+    <title>Mona Books | Admin Product</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="/assets/stylesheets/general.css">
+    <link rel="stylesheet" href="/assets/stylesheets/variables.css">
+    <link rel="stylesheet" href="/assets/stylesheets/admin/general.css">
+    <link rel="stylesheet" href="/assets/stylesheets/admin/products.css">
     
 </head>
 <body>
 
-    <a class="btn d-flex align-items-center go-back" href="admin-main.php">
+    <a class="btn d-flex align-items-center go-back" href="admin-main.html">
         <ion-icon name="chevron-back"></ion-icon>
         <span>Return to Main Page</span>
     </a>
@@ -65,7 +76,7 @@ include "assets/scripts/php/connection.php";
                             <th class="controls">Controls</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <!-- <tbody>
                         <?php
                             $result = mysqli_query($connection, "SELECT * FROM fiction");
                             while($row = mysqli_fetch_array($result)) {
@@ -88,7 +99,7 @@ include "assets/scripts/php/connection.php";
                                 </tr><?php
                             }
                         ?>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
             <div class="tab-pane fade" id="non_fiction" role="tabpanel" aria-labelledby="non_fiction-tab">
@@ -105,7 +116,7 @@ include "assets/scripts/php/connection.php";
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
+                        <!-- <?php
                             $result = mysqli_query($connection, "SELECT * FROM non_fiction");
                             while($row = mysqli_fetch_array($result)) {
                                 ?><tr>
@@ -127,7 +138,7 @@ include "assets/scripts/php/connection.php";
                                 </tr><?php
                             }
                         ?>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
             <div class="tab-pane fade" id="drama" role="tabpanel" aria-labelledby="drama-tab">
@@ -143,7 +154,7 @@ include "assets/scripts/php/connection.php";
                             <th class="controls">Controls</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <!-- <tbody>
                         <?php
                             $result = mysqli_query($connection, "SELECT * FROM drama");
                             while($row = mysqli_fetch_array($result)) {
@@ -166,7 +177,7 @@ include "assets/scripts/php/connection.php";
                                 </tr><?php
                             }
                         ?>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
             <div class="tab-pane fade" id="poetry" role="tabpanel" aria-labelledby="poetry-tab">
@@ -182,7 +193,7 @@ include "assets/scripts/php/connection.php";
                             <th class="controls">Controls</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <!-- <tbody>
                         <?php
                             $result = mysqli_query($connection, "SELECT * FROM poetry");
                             while($row = mysqli_fetch_array($result)) {
@@ -205,7 +216,7 @@ include "assets/scripts/php/connection.php";
                                 </tr><?php
                             }
                         ?>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
             <div class="tab-pane fade" id="folktale" role="tabpanel" aria-labelledby="folktale-tab">
@@ -221,7 +232,7 @@ include "assets/scripts/php/connection.php";
                             <th class="controls">Controls</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <!-- <tbody>
                         <?php
                             $result = mysqli_query($connection, "SELECT * FROM folktale");
                             while($row = mysqli_fetch_array($result)) {
@@ -244,7 +255,7 @@ include "assets/scripts/php/connection.php";
                                 </tr><?php
                             }
                         ?>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
             <div class="tab-pane fade" id="historical" role="tabpanel" aria-labelledby="historical-tab">
@@ -260,7 +271,7 @@ include "assets/scripts/php/connection.php";
                             <th class="controls">Controls</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <!-- <tbody>
                         <?php
                             $result = mysqli_query($connection, "SELECT * FROM historical");
                             while($row = mysqli_fetch_array($result)) {
@@ -283,7 +294,7 @@ include "assets/scripts/php/connection.php";
                                 </tr><?php
                             }
                         ?>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
             <div class="tab-pane fade" id="educational" role="tabpanel" aria-labelledby="educational-tab">
@@ -299,7 +310,7 @@ include "assets/scripts/php/connection.php";
                             <th class="controls">Controls</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <!-- <tbody>
                         <?php
                             $result = mysqli_query($connection, "SELECT * FROM educational");
                             while($row = mysqli_fetch_array($result)) {
@@ -322,7 +333,7 @@ include "assets/scripts/php/connection.php";
                                 </tr><?php
                             }
                         ?>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
             <div class="tab-pane fade" id="children_books" role="tabpanel" aria-labelledby="children_books-tab">
@@ -338,7 +349,7 @@ include "assets/scripts/php/connection.php";
                             <th class="controls">Controls</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <!-- <tbody>
                         <?php
                             $result = mysqli_query($connection, "SELECT * FROM children_books");
                             while($row = mysqli_fetch_array($result)) {
@@ -361,7 +372,7 @@ include "assets/scripts/php/connection.php";
                                 </tr><?php
                             }
                         ?>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>
         </div>
@@ -370,12 +381,16 @@ include "assets/scripts/php/connection.php";
     </div>
       
     <!-- scripts -->
-    <?php
+    <!-- <?php
 
         // general scripts
         body_scripts();
     
-    ?>
+    ?> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="assets\scripts\js\general.js"></script>
 
 </body>
 </html>
