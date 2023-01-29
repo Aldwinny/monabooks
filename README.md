@@ -1,6 +1,6 @@
 # Mona Books
 
-(Mona books)[https://mona-books.000webhostapp.com/index.php] is a full-stack website created using HTML, CSS, JS for frontend and PHP, mySQL for backend. It utilizes REST API architecture to separate backend and frontend.
+[Mona books](https://mona-books.000webhostapp.com/index.php) is a full-stack website created using HTML, CSS, JS for frontend and PHP, mySQL for backend. It utilizes REST API architecture to separate backend and frontend.
 
 ## Documentation
 
